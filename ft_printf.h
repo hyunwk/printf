@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/29 14:00:07 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/06/29 16:41:10 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/01 13:05:55 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@
 
 typedef struct st_info
 {
-	int	size; // printf return len
-	int	zero; // flag zero
-	int	width_num; // flag width size
-	int right_align;
-	int	asterisk; // flag *
-	int	dot;      // flag .
+	char	alpha;
+	int		size; // printf return len
+	int		zero; // flag zero
+	int		width_num; // flag width size
+	int		right_align;
+	int		asterisk; // flag *
+	int		dot;      // flag .
 } s_info;
 #endif

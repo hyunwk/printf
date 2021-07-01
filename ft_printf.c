@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/06/29 16:50:39 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/01 13:52:58 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_putstr_fd(char *s, int fd)
 		write(fd, s, ft_strlen(s));
 }
 
-int	is_num(char *s, s_info *info)
+int	is_num(const char *s, s_info *info)
 {
 	int idx;
 	int	num;
@@ -52,12 +52,14 @@ int	is_num(char *s, s_info *info)
 	idx = 0;
 	num = 0;
 	while ('0' <= s[idx] && s[idx] <= '9')
-		num = num * 10 + *line - '0';
-	info->width_len = idx;
+	{
+		num = num * 10 + *s - '0';
+		idx++;
+	}
 	return (num);
 }
 
-int check_flags(char *line, s_info *info)
+int check_flags(const char *line, s_info *info)
 {
 	int	num;
 	int	idx;
@@ -65,7 +67,7 @@ int check_flags(char *line, s_info *info)
 	// flags  -0.*
 	// check flags before num
 	idx = 0;
-	while (!is_num(line[idx], info) && !ft_strchr(FLAG_ALPHA, line[idx]))
+	while (!is_num((line + idx), info) && !ft_strchr(FLAG_ALPHA, line[idx]))
 	{
 		if (line[idx] == '-')
 			info->right_align = 0;
@@ -75,7 +77,8 @@ int check_flags(char *line, s_info *info)
 	}
 	
 	// check width num
-	info->width = is_num(line[idx++], info);
+	if (is_num(&line[idx], info))
+		info->width_num = is_num(&line[idx++], info);
 
 	// check flag_alpha ,   what if err?
 	info->alpha = line[idx++];
@@ -91,6 +94,20 @@ void	init_info(s_info *info)
 	info->dot = 0;
 }
 
+int		print_str(char *s, s_info *info)
+{
+	write(1, s, ft_strlen(s));
+	info->size += ft_strlen(s);
+	return (ft_strlen(s));
+}
+
+int		print_char(char c, s_info *info)
+{
+	write(1, c, 1);
+	info->size += 1;
+	return (sizeof(char));
+}
+
 int	check_format(const char *line, s_info *info, va_list *ap)
 {
 	int len;
@@ -98,26 +115,23 @@ int	check_format(const char *line, s_info *info, va_list *ap)
 	char	*s;
 
 	init_info(info);
-	rtn = check_flags(*line)
+	rtn = check_flags(line, info);
 
 	len = 0;
 	if (*line == '%')
 		ft_putchar('%', 1);
+	else if (info->alpha == 'c')
+	{
+		return (print_char(va_arg(*ap, int), info));
+	}
 	else if (info->alpha == 's')
 	{
 		// write without any flags
-		s = (char *)va_arg(*ap, char *);
-		write(1, s, ft_strlen(s));
-		info->size += ft_strlen(s);
-		return (ft_strlen(s));
+		//s = (char *)va_arg(*ap, char *);
+		return (print_str((char *)va_arg(*ap, char *), info));
 	}
 	// need to add conversion  cspdiuxX%
 	return (len);
-}
-
-int		is_valid(const char *line, va_list ap)
-{
-	return (0);
 }
 
 int ft_printf(const char *line, ...)
@@ -131,9 +145,6 @@ int ft_printf(const char *line, ...)
 	if (!(info = malloc(sizeof(s_info) * 1)))
 		return (-1);
 	info->size = 0;
-
-	if (is_valid(line, ap))
-		return (ERR);
 
 	while (*line)
 	{
@@ -149,14 +160,17 @@ int ft_printf(const char *line, ...)
 			line++;
 		}
 	}
-
 	va_end(ap);
 	return (info->size);
 }
 
 int main()
 {
-	int rtn = ft_printf("%s %s\n","12", "abc");
-	printf("return len : %d",rtn);
+	int rtn;
+
+	rtn = ft_printf("%s %s\n","12", "abc");
+	printf("return len : %d\n",rtn);
+	//rtn = ft_printf("%d\n",12);
+	//printf("return len : %d\n",rtn);
 }
 
