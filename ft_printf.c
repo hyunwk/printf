@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/01 19:23:58 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/01 20:56:34 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,42 +76,6 @@ void	init_info(s_info *info)
 	info->dot = -1;
 }
 
-int	ft_strlcpy(char *dst, char *src, int dstsize)
-{
-	int i;
-	int len_src;
-
-	if (!src)
-		return (0);
-	i = 0;
-	len_src = ft_strlen(src);
-	if (dstsize == 0)
-		return (len_src);
-	while (i++ < dstsize - (int)1 && *src)
-		*dst++ = *src++;
-	*dst = '\0';
-	return (len_src);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	int		len_s1;
-	int		len_s2;
-	int		idx;
-	char	*ptr;
-
-	if (!s1)
-		return ((char *)s2);
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
-	idx = 0;
-	if (!(ptr = (char *)malloc(sizeof(char) * (len_s1 + len_s2 + 1))))
-		return (NULL);
-	ft_strlcpy(ptr, s1, len_s1 + 1);
-	ft_strlcpy(ptr + len_s1, s2, len_s2 + 1);
-	return (ptr);
-}
-
 void	print_multi_str(char c, int time)
 {
 	int	idx;
@@ -127,6 +91,7 @@ int		print_str(char *s, s_info *info)
 
 	space_len = info->width - ft_strlen(s);
 	if (space_len >= 0)
+	{
 		if (info->left_align)
 		{
 			ft_putstr(s, ft_strlen(s));
@@ -145,11 +110,18 @@ int		print_str(char *s, s_info *info)
 				ft_putstr(s, ft_strlen(s));
 			}
 		}
-	else if (info->dot || space_len < 0)
+		info->size += space_len + ft_strlen(s);
+	}
+	else if (info->dot != -1 && space_len < 0)
+	{
 		ft_putstr(s, info->width);
+		info->size += info->width;
+	}
 	else
+	{
 		ft_putstr(s, ft_strlen(s));
-	info->size += space_len + ft_strlen(s);
+		info->size += ft_strlen(s);
+	}
 	return (1);
 }
 
@@ -159,33 +131,44 @@ int		print_char(char c, s_info *info)
 	info->size += 1;
 	return (sizeof(char));
 }
+void	check_precision(char c, s_info *info, va_list *ap)
+{
+	int	num;
+
+	if (c == '-')
+		info->left_align = 1;
+	if (c  == '.')
+		info->dot = 1;
+	if (c == '*')
+	{
+		num = va_arg(*ap, int);
+		if (num < 0)
+		{
+			info->width = va_arg(*ap, int) * -1;
+			info->left_align = 1;
+		}
+		else
+			info->width = num;
+		info->asterisk = 1;
+	}
+}
 
 int check_flags(const char *line, s_info *info, va_list *ap)
 {
-	int	num;
 	int	idx;
 
 	// flags  -0.*
 	// check flags before num
 	idx = 0;
+
+	//width
+	if (is_num(&line[idx], info) && !info->asterisk)
+		idx += is_num(&line[idx], info);
+
+	// flag
 	while (!is_num((line + idx), info) && !ft_strchr(FLAG_TYPE, line[idx]))
 	{
-		if (line[idx] == '-')
-			info->left_align = 1;
-		if (line[idx] == '.')
-			info->dot = 1;
-		if (line[idx] == '*')
-		{
-			num = va_arg(*ap, int);
-			if (num < 0)
-			{
-				info->width = va_arg(*ap, int) * -1;
-				info->left_align = 1;
-			}
-			else
-				info->width = num;
-			info->asterisk = 1;
-		}
+		check_precision(line[idx], info, ap);
 		idx++;
 	}
 	
@@ -194,7 +177,7 @@ int check_flags(const char *line, s_info *info, va_list *ap)
 		info->zero = 1;
 		idx++;
 	}
-	// check width num
+	// check precise
 	if (is_num(&line[idx], info) && !info->asterisk)
 		idx += is_num(&line[idx], info);
 
@@ -265,22 +248,37 @@ int ft_printf(const char *line, ...)
 
 int main()
 {
-	int rtn;
+	int result_f, result_r;
+	char *s = "42Seoul";
+//	printf("case1\n");
+//	result_f = ft_printf("-->|%3s|<--\n", s);
+//	result_r =    printf("-->|%3s|<--\n", s);
+//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
 
-//	rtn = ft_printf("%-6s\n","12");
-//	printf("s + '\\n'  len : %d\n",rtn);
-//	rtn = ft_printf("%6s\n","12");
-//	printf("s + '\\n'  len : %d\n",rtn);
-	rtn = ft_printf("%.2s","123");
-	printf("\n%.2s\n","123");
-	printf("s + '\\n'  len : %d\n",rtn);
-//	rtn = ft_printf("%3.4s","12");
-//	printf("\n%3.4s\n","12");
-//	printf("s + '\\n'  len : %d\n",rtn);
-//	rtn = ft_printf("%5.4s","12");
-//	printf("\n%5.4s\n","12");
-//	printf("s + '\\n'  len : %d\n",rtn);
-	//rtn = ft_printf("%d\n",12);
-	//printf("return len : %d\n",rtn);
+
+	printf("case4\n");
+	result_f = ft_printf("-->|%3.4s|<--\n", s);
+//	result_r =    printf("-->|%3.4s|<--\n", s);
+//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+
+//	printf("case5\n");
+//	result_f = ft_printf("-->|%7.4s|<--\n", s);
+//	result_r =    printf("-->|%7.4s|<--\n", s);
+//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+//
+//	printf("case6\n");
+//	result_f = ft_printf("-->|%.9s|<--\n", s);
+//	result_r =    printf("-->|%.9s|<--\n", s);
+//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+//
+//	printf("case7\n");
+//	result_f = ft_printf("-->|%7.9s|<--\n", s);
+//	result_r =    printf("-->|%7.9s|<--\n", s);
+//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+//
+//		printf("case8\n");
+//	result_f = ft_printf("-->|%10.9s|<--\n", s);
+//	result_r =    printf("-->|%10.9s|<--\n", s);
+//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+
 }
-
