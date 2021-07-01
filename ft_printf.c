@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/01 17:45:03 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/01 19:23:58 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,17 @@ char	*ft_strchr(const char *s, int c)
 	return ((char *)s);
 }
 
-void	ft_putstr(char *s)
+void	ft_putstr(char *s, int time)
 {
-	if (s)
-		write(1, s, ft_strlen(s));
+	int idx;
+
+	idx = 0;
+	while (idx < time)
+	{
+		ft_putchar(*s);
+		s++;
+		idx++;
+	}
 }
 
 int	is_num(const char *s, s_info *info)
@@ -56,7 +63,8 @@ int	is_num(const char *s, s_info *info)
 		num = num * 10 + s[idx] - '0';
 		idx++;
 	}
-	return (num);
+	info->width = num;
+	return (idx);
 }
 
 void	init_info(s_info *info)
@@ -121,7 +129,7 @@ int		print_str(char *s, s_info *info)
 	if (space_len >= 0)
 		if (info->left_align)
 		{
-			ft_putstr(s);
+			ft_putstr(s, ft_strlen(s));
 			print_multi_str(' ', space_len); 
 		}
 		else
@@ -129,16 +137,18 @@ int		print_str(char *s, s_info *info)
 			if (info->zero)
 			{
 				print_multi_str('0', space_len);
-				ft_putstr(s);
+				ft_putstr(s, ft_strlen(s));
 			}
 			else
 			{
 				print_multi_str(' ', space_len);
-				ft_putstr(s);
+				ft_putstr(s, ft_strlen(s));
 			}
 		}
+	else if (info->dot || space_len < 0)
+		ft_putstr(s, info->width);
 	else
-		ft_putstr(s);
+		ft_putstr(s, ft_strlen(s));
 	info->size += space_len + ft_strlen(s);
 	return (1);
 }
@@ -186,11 +196,7 @@ int check_flags(const char *line, s_info *info, va_list *ap)
 	}
 	// check width num
 	if (is_num(&line[idx], info) && !info->asterisk)
-	{
-		info->width = is_num(&line[idx], info);
-		// how to get int digit num
-		idx += ft_strlen(info->width);
-	}
+		idx += is_num(&line[idx], info);
 
 	// check flag_type ,   what if err?
 	if (ft_strchr(FLAG_TYPE, line[idx]))
@@ -265,9 +271,15 @@ int main()
 //	printf("s + '\\n'  len : %d\n",rtn);
 //	rtn = ft_printf("%6s\n","12");
 //	printf("s + '\\n'  len : %d\n",rtn);
-	rtn = ft_printf("%12s\n","12");
-	printf("\nanswer : %12s\n","12");
+	rtn = ft_printf("%.2s","123");
+	printf("\n%.2s\n","123");
 	printf("s + '\\n'  len : %d\n",rtn);
+//	rtn = ft_printf("%3.4s","12");
+//	printf("\n%3.4s\n","12");
+//	printf("s + '\\n'  len : %d\n",rtn);
+//	rtn = ft_printf("%5.4s","12");
+//	printf("\n%5.4s\n","12");
+//	printf("s + '\\n'  len : %d\n",rtn);
 	//rtn = ft_printf("%d\n",12);
 	//printf("return len : %d\n",rtn);
 }
