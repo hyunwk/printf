@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/29 14:00:07 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/01 16:29:30 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/07/01 15:57:09 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/07/01 15:57:23 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-#define FT_PRINTF_H
-#define ERR -1
-#define FLAG_TYPE "cspdiuxX"
+#include "../printf.h"
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "./libft/libft.h"
-
-typedef struct st_info
+char	*ft_strchr(const char *s, int c)
 {
-	char	type;
-	int		size; // printf return len
-	int		zero; // flag zero
-	int		width; // flag width size
-	int		left_align;
-	int		asterisk; // flag *
-	int		dot;      // flag .
-} s_info;
-
-#endif
+	while (*s != (char)c)
+	{
+		if (!(*s))
+			return (0);
+		s++;
+	}
+	return ((char *)s);
+}

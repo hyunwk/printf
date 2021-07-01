@@ -1,34 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/29 14:00:07 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/01 16:29:30 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/07/01 15:57:32 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/07/01 15:57:38 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-#define FT_PRINTF_H
-#define ERR -1
-#define FLAG_TYPE "cspdiuxX"
+#include "../printf.h"
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "./libft/libft.h"
-
-typedef struct st_info
+void	ft_putstr(char *s)
 {
-	char	type;
-	int		size; // printf return len
-	int		zero; // flag zero
-	int		width; // flag width size
-	int		left_align;
-	int		asterisk; // flag *
-	int		dot;      // flag .
-} s_info;
-
-#endif
+	if (s)
+		write(1, s, ft_strlen(s));
+}
