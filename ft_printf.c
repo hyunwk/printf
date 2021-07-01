@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/01 20:56:34 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/01 21:00:02 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,14 +250,14 @@ int main()
 {
 	int result_f, result_r;
 	char *s = "42Seoul";
-//	printf("case1\n");
-//	result_f = ft_printf("-->|%3s|<--\n", s);
-//	result_r =    printf("-->|%3s|<--\n", s);
-//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+	printf("case1\n");
+	result_f = ft_printf("-->|%.*s|<--\n", -2, s);
+	result_r =    printf("-->|%.*s|<--\n", -2, s);
+	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
 
 
-	printf("case4\n");
-	result_f = ft_printf("-->|%3.4s|<--\n", s);
+//	printf("case4\n");
+//	result_f = ft_printf("-->|%3.4s|<--\n", s);
 //	result_r =    printf("-->|%3.4s|<--\n", s);
 //	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
 
