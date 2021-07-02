@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 15:44:24 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 16:22:07 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	ft_putstr(char *s, int time, s_info *info)
 		s++;
 		idx++;
 	}
-	info->size += idx;
 }
 
 int	is_num(const char *s, s_info *info)
@@ -275,7 +274,6 @@ int ft_printf(const char *line, ...)
 		else
 		{
 			ft_putchar(*line, info);
-			info->size++;
 			line++;
 		}
 	}
@@ -291,41 +289,4 @@ int main()
 	result_f = ft_printf("-->|%-12s|<--\n", s);
 	result_r =    printf("-->|%-12s|<--\n", s);
 	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-
-//
-//	printf("case2\n");
-//	result_f = ft_printf("-->|%10s|<--\n", s);
-//	result_r =    printf("-->|%10s|<--\n", s);
-//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-//
-// 	printf("case3\n");
-//	result_f = ft_printf("-->|%.4s|<--\n", s);
-//	result_r =    printf("-->|%.4s|<--\n", s);
-//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-//
-//	printf("case4\n");
-//	result_f = ft_printf("-->|%3.4s|<--\n", s);
-//	result_r =    printf("-->|%3.4s|<--\n", s);
-//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-//
-//	printf("case5\n");
-//	result_f = ft_printf("-->|%7.4s|<--\n", s);
-//	result_r =    printf("-->|%7.4s|<--\n", s);
-//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-//
-//	printf("case6\n");
-//	result_f = ft_printf("-->|%.9s|<--\n", s);
-//	result_r =    printf("-->|%.9s|<--\n", s);
-//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-//
-//	printf("case7\n");
-//	result_f = ft_printf("-->|%7.9s|<--\n", s);
-//	result_r =    printf("-->|%7.9s|<--\n", s);
-//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-//
-//		printf("case8\n");
-//	result_f = ft_printf("-->|%10.9s|<--\n", s);
-//	result_r =    printf("-->|%10.9s|<--\n", s);
-//	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-//
 }
