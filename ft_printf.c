@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 18:37:40 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 18:51:47 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,23 @@ int	ft_strlen(char *s)
 	while (s[len])
 		len++;
 	return (len);
+}
+
+int     ft_putnbr(int n, t_info *info)
+{
+	if (n < 0)
+    {
+		my_putchar('-', info);
+		n = -n;
+    }
+	if (n >= 10)
+    {
+		my_put_nbr(n / 10, info);
+		my_putchar(n % 10 + '0', info);
+    }
+	if (n < 10)
+		my_putchar(n % 10 + '0', info);
+	return (n);
 }
 
 void	ft_putchar(char c, t_info *info)
@@ -146,6 +163,28 @@ int		print_char(char c, t_info *info)
 	return (sizeof(char));
 }
 
+int		print_int(int n, t_info *info)
+{
+	if (info->left_align)
+	{
+		ft_putchar(c, info);
+		if (info->width)
+			print_multi_str(info->width - 1, info);
+	}
+	else
+	{
+		if (info->width)
+		{
+			if (info->zero)
+				print_multi_str(info->width - 1, info);
+			else
+				print_multi_str(info->width - 1, info);
+		}
+		ft_putchar(c, info);
+	}
+	return (sizeof(char));
+}
+
 void	get_flags(char c, t_info *info)
 {
 	if (c == '-')
@@ -226,13 +265,13 @@ int	check_format(const char *line, t_info *info, va_list *ap)
 	else if (info->type == 'c')
 		return (print_char(va_arg(*ap, int), info) + rtn);
 	else if (info->type == 's')
-		return (print_str((char *)va_arg(*ap, char *), info) + rtn);
+		return (print_str(va_arg(*ap, char *), info) + rtn);
 //	else if (info->type == 'p')
 //		return (print_str((long long)va_arg(*ap, long long), info) + rtn);
-//	else if (info->type == 'd')
-//		return (print_str(va_arg(*ap, int), info) + rtn);
-//	else if (info->type == 'i')
-//		return (print_str(va_arg(*ap, int), info) + rtn);
+	else if (info->type == 'd')
+		return (print_int(va_arg(*ap, int), info) + rtn);
+	else if (info->type == 'i')
+		return (print_int(va_arg(*ap, int), info) + rtn);
 //	else if (info->type == 'u')
 //		return (print_str((unsigned int)va_arg(*ap, int), info) + rtn);
 //	else if (info->type == 'x')

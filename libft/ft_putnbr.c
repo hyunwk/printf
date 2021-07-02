@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/01 16:05:45 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 18:51:32 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/07/02 18:49:40 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/07/02 18:50:56 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
-# include "../ft_printf.h"
+#include "libft.h"
 
-typedef struct s_info
+int     ft_putnbr(int n, t_info *info)
 {
-	char	type;
-	int		size;
-	int		zero;
-	int		width;
-	int		prec;
-	int		left_align;
-	int		asterisk;
-	int		dot;
-}	t_info;
-
-int			ft_strlen(char *s);
-void		ft_putchar(char c, t_info *info);
-int			ft_putnbr(int n, t_info *info)
-char		*ft_strchr(const char *s, int c);
-void		ft_putstr(char *s, int time, t_info *info);
-#endif
+	if (n < 0)
+    {
+		my_putchar('-', info);
+		n = -n;
+    }
+	if (n >= 10)
+    {
+		my_put_nbr(n / 10, info);
+		my_putchar(n % 10 + '0', info);
+    }
+	if (n < 10)
+		my_putchar(n % 10 + '0', info);
+	return (n);
+}
