@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 22:18:25 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 22:34:42 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,28 +97,28 @@ int	check_format(const char *line, t_info *info, va_list *ap)
 }
 
 
-int	ft_printf(const char *line, ...)
+int	ft_printf(const char *format, ...)
 {
 	va_list	ap;
 	t_info	*info;
 	int		written_len;
 
-	va_start(ap, line);
+	va_start(ap, format);
 	info = malloc(sizeof(t_info) * 1);
 	if (!info)
 		return (-1);
 	info->size = 0;
-	while (*line)
+	while (*format)
 	{
-		if (*line == '%')
+		if (*format== '%')
 		{
-			written_len = check_format(line + 1, info, &ap);
-			line += written_len;
+			written_len = check_format(format + 1, info, &ap);
+			format += written_len;
 		}
 		else
 		{
-			ft_putchar(*line, info);
-			line++;
+			ft_putchar(*format, info);
+			format++;
 		}
 	}
 	va_end(ap);
