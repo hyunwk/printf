@@ -6,11 +6,11 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 15:56:30 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/01 15:57:00 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 16:42:31 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../printf.h"
+#include "libft.h"
 
 int	ft_strlen(char *s)
 {

@@ -6,13 +6,14 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 15:56:40 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/01 15:56:51 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 16:42:46 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../printf.h"
+#include "libft.h"
 
-void	ft_putchar(char c)
+void	ft_putchar(char c, s_info *info)
 {
 	write(1, &c, 1);
+	info->size += 1;
 }
