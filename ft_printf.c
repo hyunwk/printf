@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 16:22:07 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 18:37:40 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	ft_strlen(char *s)
 		len++;
 	return (len);
 }
-void	ft_putchar(char c, s_info *info)
+
+void	ft_putchar(char c, t_info *info)
 {
 	write(1, &c, 1);
 	info->size += 1;
@@ -39,9 +40,9 @@ char	*ft_strchr(const char *s, int c)
 	return ((char *)s);
 }
 
-void	ft_putstr(char *s, int time, s_info *info)
+void	ft_putstr(char *s, int time, t_info *info)
 {
-	int idx;
+	int	idx;
 
 	idx = 0;
 	while (idx < time)
@@ -52,11 +53,11 @@ void	ft_putstr(char *s, int time, s_info *info)
 	}
 }
 
-int	is_num(const char *s, s_info *info)
+int	is_num(const char *s, t_info *info)
 {
-	int idx;
+	int	idx;
 	int	num;
-	
+
 	idx = 0;
 	num = 0;
 	while ('0' <= s[idx] && s[idx] <= '9')
@@ -67,153 +68,141 @@ int	is_num(const char *s, s_info *info)
 	if (!info->width && info->dot == -1)
 		info->width = num;
 	else if (info->dot != -1)
-		info->precise = num;
+		info->prec = num;
 	return (idx);
 }
 
-void	init_info(s_info *info)
+void	init_info(t_info *info)
 {
 	info->zero = 0;
 	info->width= 0;
 	info->left_align = 0;
 	info->asterisk = 0;
 	info->dot = -1;
-	info->precise = -1; // dot and precise duplicated
+	info->prec = -1; // dot and prec duplicated
 }
 
-void	print_multi_str(char c, int time, s_info *info)
+void	print_multi_str(int time, t_info *info)
 {
 	int	idx;
+	char	c;
 
 	idx = 0;
+	if (info->zero && !info->left_align)
+		c = '0';
+	else
+		c = ' ';
 	while (idx++ < time)
 		ft_putchar(c, info);
 }
 
-int		print_str(char *s, s_info *info)
+int	print_str(char *s, t_info *info)
 {
-	int space_len;
+	int	space_len;
 
 	space_len = ft_strlen(s) - info->width ;
 	// len > width
-	if (space_len >= 0 && info->dot != -1 && ft_strlen(s) > info->precise)
+	if (space_len >= 0 && info->dot != -1 && ft_strlen(s) > info->prec)
 	{
-		if (info->width > info->precise)
-			print_multi_str(' ', info->width - info->precise, info);
-		ft_putstr(s, info->precise, info);
+		if (info->width > info->prec)
+			print_multi_str(info->width - info->prec, info);
+		ft_putstr(s, info->prec, info);
 	}
-	else if (space_len >= 0 && (ft_strlen(s) <= info->precise || info->precise == -1))
+	else if (space_len >= 0 && (ft_strlen(s) <= info->prec || info->prec == -1))
 		ft_putstr(s, ft_strlen(s), info);
 	// width > len
+	else if (info->left_align)
+	{
+		ft_putstr(s, ft_strlen(s), info);
+		print_multi_str(info->width - ft_strlen(s), info); 
+	}
 	else
 	{
-		if (info->left_align)
-		{
-			ft_putstr(s, ft_strlen(s), info);
-			print_multi_str(' ', info->width - ft_strlen(s), info); 
-		}
-		else
-		{
-			if (info->zero)
-			{
-				print_multi_str('0', info->width - ft_strlen(s), info);
-				ft_putstr(s, ft_strlen(s), info);
-			}
-			else
-			{
-				print_multi_str(' ', info->width - ft_strlen(s), info);
-				ft_putstr(s, ft_strlen(s), info);
-			}
-		}
+		print_multi_str(info->width - ft_strlen(s), info);
+		ft_putstr(s, ft_strlen(s), info);
 	}
 	return (1);
-//	if (ft_strlen(s) >= info->width)
-//		ft_putstr(s, ft_strlen(s));
-//	else if (ft_strlen(s) > info->precise && info->width > info->precise)
-//	{
-//		print_multi_str(' ', info->width - info-> precise);
-//		ft_putstr(s, info->precise);
-//	}
-//	else if (ft_strlen(s) > info->precise)
-//		ft_putstr(s, info->precise);
-//	else if (ft_strlen(s) < info->precise && ft_strlen(s) < info->width)
-//	{
-//		print_multi_str(' ', info->width - ft_strlen(s));
-//		ft_putstr(s, ft_strlen(s));
-//	}
-//	else
-//	{
-//		if (info->left_align)
-//		{
-//			ft_putstr(s, ft_strlen(s));
-//			print_multi_str(' ', info->width - ft_strlen(s));
-//		}
-//		else
-//		{
-//			print_multi_str(' ', info->width - ft_strlen(s));
-//			ft_putstr(s, ft_strlen(s));
-//		}
-//	}
-//	return (1);
 }
 
-int		print_char(char c, s_info *info)
+int		print_char(char c, t_info *info)
 {
-	ft_putchar(c, info);
-	info->size += 1;
+	if (info->left_align)
+	{
+		ft_putchar(c, info);
+		if (info->width)
+			print_multi_str(info->width - 1, info);
+	}
+	else
+	{
+		if (info->width)
+		{
+			if (info->zero)
+				print_multi_str(info->width - 1, info);
+			else
+				print_multi_str(info->width - 1, info);
+		}
+		ft_putchar(c, info);
+	}
 	return (sizeof(char));
 }
-void	check_precision(char c, s_info *info, va_list *ap)
-{
-	int	num;
 
+void	get_flags(char c, t_info *info)
+{
 	if (c == '-')
 		info->left_align = 1;
 	if (c  == '.')
 		info->dot = 1;
 	if (c == '0')
 		info->zero = 1;
-	if (c == '*')
+}
+
+void	get_asterisk(t_info *info, va_list *ap)
+{
+	int num;
+
+	info->asterisk = 1;
+	num = va_arg(*ap, int);
+	if (num < 0)
 	{
-		info->asterisk = 1;
-		num = va_arg(*ap, int);
-		if (num < 0)
+		if (info->dot == -1)
 		{
-			if (info->dot == -1)
-			{
-				info->width = num * -1;
-				info->left_align = 1;
-			}
-			else
-			{
-				info->asterisk = -1;
-				info->dot = -1;
-			}
+			info->width = num * -1;
+			info->left_align = 1;
 		}
-		else if (!info->width)
+		else
 		{
-			if (info->dot == -1)
-				info->width = num;
-			else
-				info->precise = num;
+			info->asterisk = -1;
+			info->dot = -1;
 		}
+	}
+	else if (!info->width)
+	{
+		if (info->dot == -1)
+			info->width = num;
+		else
+			info->prec = num;
 	}
 }
 
-int check_flags(const char *line, s_info *info, va_list *ap)
+int get_format_info(const char *line, t_info *info, va_list *ap)
 {
 	int	idx;
 
 	idx = 0;
-	//width
-	if (is_num(&line[idx], info))
+	//width || 0처리
+	if (line[idx] && '1' <= line[idx] && line[idx] <= '9')
 		idx += is_num(&line[idx], info);
 
 	// flag
 	while (ft_strchr(FLAG, line[idx]))
-		check_precision(line[idx++], info, ap);
+	{
+		get_flags(line[idx], info);
+		if ('*' == line[idx])
+			get_asterisk(info, ap);
+		idx++;
+	}
 
-	// check precise
+	// check prec
 	if (is_num(line + idx, info) && !info->asterisk)
 		idx += is_num(line + idx, info);
 
@@ -225,13 +214,14 @@ int check_flags(const char *line, s_info *info, va_list *ap)
 	return (idx);
 }
 
-int	check_format(const char *line, s_info *info, va_list *ap)
+int	check_format(const char *line, t_info *info, va_list *ap)
 {
 	int rtn;
 
 	init_info(info);
-	rtn = check_flags(line, info, ap);
+	rtn = get_format_info(line, info, ap);
 	if (*line == '%')
+		//print_char('%', info);
 		ft_putchar('%', info);
 	else if (info->type == 'c')
 		return (print_char(va_arg(*ap, int), info) + rtn);
@@ -255,12 +245,12 @@ int	check_format(const char *line, s_info *info, va_list *ap)
 int ft_printf(const char *line, ...)
 {
 	va_list ap;
-	s_info	*info;
+	t_info	*info;
 	int		written_len;
 
 	va_start(ap, line);
 
-	if (!(info = malloc(sizeof(s_info) * 1)))
+	if (!(info = malloc(sizeof(t_info) * 1)))
 		return (-1);
 	info->size = 0;
 
@@ -283,10 +273,18 @@ int ft_printf(const char *line, ...)
 
 int main()
 {
-	int result_f, result_r;
-	char *s = "42Seoul";
 	printf("case1\n");
-	result_f = ft_printf("-->|%-12s|<--\n", s);
-	result_r =    printf("-->|%-12s|<--\n", s);
-	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+	/* [width] */
+//	printf("[%0*c]",5, 'a');		//	[ a]
+	ft_printf("[%-0*c]\n",5, 'a');		//	[ a]
+	
+//	printf("[%-02c]", 'a');		//	[a ]
+	ft_printf("[%-02c]\n", 'a');		//	[a ]
+	
+	
+//	printf("[%*c]", -2, 'a');	//	[a ]
+	ft_printf("[%*c]\n", -2, 'a');	//	[a ]
+
+	printf("[%-*c]", -2, 'a');	//	[a ]
+	ft_printf("[%-*c]\n", -2, 'a');	//	[a ]
 }
