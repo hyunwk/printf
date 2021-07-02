@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 20:47:58 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 21:06:39 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@ int	ft_strlen(char *s)
 	return (len);
 }
 
-int     ft_putnbr(int n, t_info *info)
+int	ft_putnbr(int n, t_info *info)
 {
 	if (n < 0)
-    {
+	{
 		ft_putchar('-', info);
 		n = -n;
-    }
+	}
 	if (n >= 10)
-    {
+	{
 		ft_putnbr(n / 10, info);
 		ft_putchar(n % 10 + '0', info);
-    }
+	}
 	if (n < 10)
 		ft_putchar(n % 10 + '0', info);
 	return (n);
@@ -92,16 +92,16 @@ int	is_num(const char *s, t_info *info)
 void	init_info(t_info *info)
 {
 	info->zero = 0;
-	info->width= 0;
+	info->width = 0;
 	info->left_align = 0;
 	info->asterisk = 0;
 	info->dot = -1;
-	info->prec = -1; // dot and prec duplicated
+	info->prec = -1;
 }
 
 void	print_multi_str(int time, t_info *info)
 {
-	int	idx;
+	int		idx;
 	char	c;
 
 	idx = 0;
@@ -131,7 +131,7 @@ int	print_str(char *s, t_info *info)
 	else if (info->left_align)
 	{
 		ft_putstr(s, ft_strlen(s), info);
-		print_multi_str(info->width - ft_strlen(s), info); 
+		print_multi_str(info->width - ft_strlen(s), info);
 	}
 	else
 	{
@@ -141,7 +141,7 @@ int	print_str(char *s, t_info *info)
 	return (1);
 }
 
-int		print_char(char c, t_info *info)
+int	print_char(char c, t_info *info)
 {
 	if (info->left_align)
 	{
@@ -152,21 +152,15 @@ int		print_char(char c, t_info *info)
 	else
 	{
 		if (info->width)
-		{
-//			if (info->zero)
-//				print_multi_str(info->width - 1, info);
-//			else
-//				print_multi_str(info->width - 1, info);
 			print_multi_str(info->width - 1, info);
-		}
 		ft_putchar(c, info);
 	}
 	return (1);
 }
 
-int		get_int_digits(int n)
+int	get_int_digits(int n)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (n < 0)
@@ -182,12 +176,12 @@ int		get_int_digits(int n)
 	return (i);
 }
 
-int		is_minus(int n)
+int	is_minus(int n)
 {
 	return (n < 0);
 }
 
-int		print_num(int n, t_info *info)
+int	print_num(int n, t_info *info)
 {
 	if (info->left_align)
 	{
@@ -220,7 +214,7 @@ void	get_flags(char c, t_info *info)
 {
 	if (c == '-')
 		info->left_align = 1;
-	if (c  == '.')
+	if (c == '.')
 		info->dot = 1;
 	if (c == '0')
 		info->zero = 1;
@@ -228,7 +222,7 @@ void	get_flags(char c, t_info *info)
 
 void	get_asterisk(t_info *info, va_list *ap)
 {
-	int num;
+	int	num;
 
 	info->asterisk = 1;
 	num = va_arg(*ap, int);
@@ -254,16 +248,13 @@ void	get_asterisk(t_info *info, va_list *ap)
 	}
 }
 
-int get_format_info(const char *line, t_info *info, va_list *ap)
+int	get_format_info(const char *line, t_info *info, va_list *ap)
 {
 	int	idx;
 
 	idx = 0;
-	//width || 0처리
 	if (line[idx] && '1' <= line[idx] && line[idx] <= '9')
 		idx += is_num(&line[idx], info);
-
-	// flag
 	while (ft_strchr(FLAG, line[idx]))
 	{
 		get_flags(line[idx], info);
@@ -271,12 +262,8 @@ int get_format_info(const char *line, t_info *info, va_list *ap)
 			get_asterisk(info, ap);
 		idx++;
 	}
-
-	// check prec
 	if (is_num(line + idx, info) && !info->asterisk)
 		idx += is_num(line + idx, info);
-
-	// check flag_type ,   what if err?
 	if (ft_strchr(TYPE, line[idx]))
 		info->type = line[idx++];
 	else
@@ -284,7 +271,7 @@ int get_format_info(const char *line, t_info *info, va_list *ap)
 	return (idx);
 }
 
-char *get_base(char c)
+char	*get_base(char c)
 {
 	if (c == 'p' || c == 'x')
 		return ("0123456789abcdef");
@@ -293,36 +280,37 @@ char *get_base(char c)
 	return (0);
 }
 
-int print_hex(unsigned long long n, t_info *info)
+int	print_hex(unsigned long long n, t_info *info)
 {
 	char	*hex_arr;
 	int		i;
 
-	i = 0;
+	i = 8;
 	hex_arr = (char *)malloc(sizeof(char) * 9);
+	if (!hex_arr)
+		return (ERR);
 	if (info->type == 'p' || info->type == 'x')
 		ft_putstr("0x", 2, info);
 	else if (info->type == 'X')
 		ft_putstr("0X", 2, info);
 	while (n)
 	{
-		hex_arr[i++] = get_base(info->type)[n % 16];
+		hex_arr[i--] = get_base(info->type)[n % 16];
 		n /= 16;
 	}
-	while (i > 0)
-		ft_putchar(hex_arr[--i], info);
+	print_str(hex_arr, info);
+	free(hex_arr);
 	return (1);
 }
 
 int	check_format(const char *line, t_info *info, va_list *ap)
 {
-	int rtn;
+	int	rtn;
 
 	init_info(info);
 	rtn = get_format_info(line, info, ap);
 	if (*line == '%')
-		//print_char('%', info);
-		ft_putchar('%', info);
+		return (print_char('%', info) + rtn);
 	else if (info->type == 'c')
 		return (print_char(va_arg(*ap, int), info) + rtn);
 	else if (info->type == 's')
@@ -335,25 +323,24 @@ int	check_format(const char *line, t_info *info, va_list *ap)
 		return (print_num(va_arg(*ap, int), info) + rtn);
 	else if (info->type == 'u')
 		return (print_num((unsigned int)va_arg(*ap, int), info) + rtn);
-//	else if (info->type == 'x')
-//		return (print_hex((unsigned int)va_arg(*ap, int), info) + rtn);
-//	else if (info->type == 'X')
-//		return (print_hex((unsigned int)va_arg(*ap, int), info) + rtn);
+	else if (info->type == 'x')
+		return (print_hex((unsigned long long)va_arg(*ap, int), info) + rtn);
+	else if (info->type == 'X')
+		return (print_hex((unsigned long long)va_arg(*ap, int), info) + rtn);
 	return (rtn);
 }
 
-int ft_printf(const char *line, ...)
+int	ft_printf(const char *line, ...)
 {
-	va_list ap;
+	va_list	ap;
 	t_info	*info;
 	int		written_len;
 
 	va_start(ap, line);
-
-	if (!(info = malloc(sizeof(t_info) * 1)))
+	info = malloc(sizeof(t_info) * 1);
+	if (!info)
 		return (-1);
 	info->size = 0;
-
 	while (*line)
 	{
 		if (*line == '%')
@@ -369,11 +356,4 @@ int ft_printf(const char *line, ...)
 	}
 	va_end(ap);
 	return (info->size);
-}
-#include<stdio.h>
-int main()
-{
-	char	*s = "as";
-	ft_printf("%p",s);
-	printf("\n%p", s);
 }
