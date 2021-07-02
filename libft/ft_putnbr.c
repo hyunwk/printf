@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 18:49:40 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 18:50:56 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 19:06:50 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ int     ft_putnbr(int n, t_info *info)
 {
 	if (n < 0)
     {
-		my_putchar('-', info);
+		ft_putchar('-', info);
 		n = -n;
     }
 	if (n >= 10)
     {
-		my_put_nbr(n / 10, info);
-		my_putchar(n % 10 + '0', info);
+		ft_putnbr(n / 10, info);
+		ft_putchar(n % 10 + '0', info);
     }
 	if (n < 10)
-		my_putchar(n % 10 + '0', info);
+		ft_putchar(n % 10 + '0', info);
 	return (n);
 }

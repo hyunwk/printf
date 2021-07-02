@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 18:51:47 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 19:59:43 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ int     ft_putnbr(int n, t_info *info)
 {
 	if (n < 0)
     {
-		my_putchar('-', info);
+		ft_putchar('-', info);
 		n = -n;
     }
 	if (n >= 10)
     {
-		my_put_nbr(n / 10, info);
-		my_putchar(n % 10 + '0', info);
+		ft_putnbr(n / 10, info);
+		ft_putchar(n % 10 + '0', info);
     }
 	if (n < 10)
-		my_putchar(n % 10 + '0', info);
+		ft_putchar(n % 10 + '0', info);
 	return (n);
 }
 
@@ -153,36 +153,67 @@ int		print_char(char c, t_info *info)
 	{
 		if (info->width)
 		{
-			if (info->zero)
-				print_multi_str(info->width - 1, info);
-			else
-				print_multi_str(info->width - 1, info);
+//			if (info->zero)
+//				print_multi_str(info->width - 1, info);
+//			else
+//				print_multi_str(info->width - 1, info);
+			print_multi_str(info->width - 1, info);
 		}
 		ft_putchar(c, info);
 	}
-	return (sizeof(char));
+	return (1);
+}
+
+int		get_int_digits(int n)
+{
+	int i;
+
+	i = 0;
+	if (n < 0)
+	{	
+		n *= -1;
+		i++;
+	}
+	while (n)
+	{
+		n /= 10;
+		i++;
+	}
+	return (i);
+}
+
+int		is_minus(int n)
+{
+	return (n < 0);
 }
 
 int		print_int(int n, t_info *info)
 {
 	if (info->left_align)
 	{
-		ft_putchar(c, info);
-		if (info->width)
-			print_multi_str(info->width - 1, info);
+		ft_putnbr(n, info);
+		if (info->width > get_int_digits(n))
+			print_multi_str(info->width - get_int_digits(n), info);
 	}
 	else
 	{
-		if (info->width)
+		if (info->prec > get_int_digits(n))
 		{
-			if (info->zero)
-				print_multi_str(info->width - 1, info);
-			else
-				print_multi_str(info->width - 1, info);
+			print_multi_str(info->width - info->prec - is_minus(n), info);
+			info->zero = 1;
 		}
-		ft_putchar(c, info);
+		else if (info->width > get_int_digits(n))
+			print_multi_str(info->width - get_int_digits(n), info);
+		if (is_minus(n))
+		{
+			ft_putchar('-', info);
+			n *= -1;
+		}
+		if (info->prec > get_int_digits(n))
+			print_multi_str(info->prec - get_int_digits(n), info);
+		ft_putnbr(n, info);
 	}
-	return (sizeof(char));
+	return (1);
 }
 
 void	get_flags(char c, t_info *info)
@@ -312,18 +343,46 @@ int ft_printf(const char *line, ...)
 
 int main()
 {
+	int d = -4242;
+	int result_f, result_r;
+	
 	printf("case1\n");
-	/* [width] */
-//	printf("[%0*c]",5, 'a');		//	[ a]
-	ft_printf("[%-0*c]\n",5, 'a');		//	[ a]
-	
-//	printf("[%-02c]", 'a');		//	[a ]
-	ft_printf("[%-02c]\n", 'a');		//	[a ]
-	
-	
-//	printf("[%*c]", -2, 'a');	//	[a ]
-	ft_printf("[%*c]\n", -2, 'a');	//	[a ]
+	result_f = ft_printf("-->|%2d|<--\n", d);
+	result_r =    printf("-->|%2d|<--\n", d);
+	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
 
-	printf("[%-*c]", -2, 'a');	//	[a ]
-	ft_printf("[%-*c]\n", -2, 'a');	//	[a ]
+	printf("case2\n");
+	result_f = ft_printf("-->|%8d|<--\n", d);
+	result_r =    printf("-->|%8d|<--\n", d);
+	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+
+	printf("case3\n");
+	result_f = ft_printf("-->|%.3d|<--\n", d);
+	result_r =    printf("-->|%.3d|<--\n", d);
+	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+
+		printf("case4\n");
+	result_f = ft_printf("-->|%1.1d|<--\n", d);
+	result_r =    printf("-->|%1.1d|<--\n", d);
+	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+
+	printf("case5\n");
+	result_f = ft_printf("-->|%6.3d|<--\n", d);
+	result_r =    printf("-->|%6.3d|<--\n", d);
+	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+
+	printf("case6\n");
+	result_f = ft_printf("-->|%.7d|<--\n", d);
+	result_r =    printf("-->|%.7d|<--\n", d);
+	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+
+	printf("case7\n");
+	result_f = ft_printf("-->|%4.7d|<--\n", d);
+	result_r =    printf("-->|%4.7d|<--\n", d);
+	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+
+	printf("case8\n");
+	result_f = ft_printf("-->|%10.7d|<--\n", d);
+	result_r =    printf("-->|%10.7d|<--\n", d);
+	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
 }

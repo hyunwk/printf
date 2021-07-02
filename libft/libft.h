@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 16:05:45 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 18:51:32 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 19:07:25 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_info
 
 int			ft_strlen(char *s);
 void		ft_putchar(char c, t_info *info);
-int			ft_putnbr(int n, t_info *info)
+int			ft_putnbr(int n, t_info *info);
 char		*ft_strchr(const char *s, int c);
 void		ft_putstr(char *s, int time, t_info *info);
 #endif
