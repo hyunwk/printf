@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 19:59:43 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/02 20:47:58 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ int	print_str(char *s, t_info *info)
 	int	space_len;
 
 	space_len = ft_strlen(s) - info->width ;
-	// len > width
+	if (!s)
+		return (ERR);
 	if (space_len >= 0 && info->dot != -1 && ft_strlen(s) > info->prec)
 	{
 		if (info->width > info->prec)
@@ -127,7 +128,6 @@ int	print_str(char *s, t_info *info)
 	}
 	else if (space_len >= 0 && (ft_strlen(s) <= info->prec || info->prec == -1))
 		ft_putstr(s, ft_strlen(s), info);
-	// width > len
 	else if (info->left_align)
 	{
 		ft_putstr(s, ft_strlen(s), info);
@@ -187,7 +187,7 @@ int		is_minus(int n)
 	return (n < 0);
 }
 
-int		print_int(int n, t_info *info)
+int		print_num(int n, t_info *info)
 {
 	if (info->left_align)
 	{
@@ -284,6 +284,36 @@ int get_format_info(const char *line, t_info *info, va_list *ap)
 	return (idx);
 }
 
+char *get_base(char c)
+{
+	if (c == 'p' || c == 'x')
+		return ("0123456789abcdef");
+	else if (c == 'X')
+		return ("0123456789ABCDEF");
+	return (0);
+}
+
+int print_hex(unsigned long long n, t_info *info)
+{
+	char	*hex_arr;
+	int		i;
+
+	i = 0;
+	hex_arr = (char *)malloc(sizeof(char) * 9);
+	if (info->type == 'p' || info->type == 'x')
+		ft_putstr("0x", 2, info);
+	else if (info->type == 'X')
+		ft_putstr("0X", 2, info);
+	while (n)
+	{
+		hex_arr[i++] = get_base(info->type)[n % 16];
+		n /= 16;
+	}
+	while (i > 0)
+		ft_putchar(hex_arr[--i], info);
+	return (1);
+}
+
 int	check_format(const char *line, t_info *info, va_list *ap)
 {
 	int rtn;
@@ -297,18 +327,18 @@ int	check_format(const char *line, t_info *info, va_list *ap)
 		return (print_char(va_arg(*ap, int), info) + rtn);
 	else if (info->type == 's')
 		return (print_str(va_arg(*ap, char *), info) + rtn);
-//	else if (info->type == 'p')
-//		return (print_str((long long)va_arg(*ap, long long), info) + rtn);
+	else if (info->type == 'p')
+		return (print_hex(va_arg(*ap, unsigned long long), info) + rtn);
 	else if (info->type == 'd')
-		return (print_int(va_arg(*ap, int), info) + rtn);
+		return (print_num(va_arg(*ap, int), info) + rtn);
 	else if (info->type == 'i')
-		return (print_int(va_arg(*ap, int), info) + rtn);
-//	else if (info->type == 'u')
-//		return (print_str((unsigned int)va_arg(*ap, int), info) + rtn);
+		return (print_num(va_arg(*ap, int), info) + rtn);
+	else if (info->type == 'u')
+		return (print_num((unsigned int)va_arg(*ap, int), info) + rtn);
 //	else if (info->type == 'x')
-//		return (print_str((unsigned int)va_arg(*ap, int), info) + rtn);
+//		return (print_hex((unsigned int)va_arg(*ap, int), info) + rtn);
 //	else if (info->type == 'X')
-//		return (print_str((unsigned int)va_arg(*ap, int), info) + rtn);
+//		return (print_hex((unsigned int)va_arg(*ap, int), info) + rtn);
 	return (rtn);
 }
 
@@ -340,49 +370,10 @@ int ft_printf(const char *line, ...)
 	va_end(ap);
 	return (info->size);
 }
-
+#include<stdio.h>
 int main()
 {
-	int d = -4242;
-	int result_f, result_r;
-	
-	printf("case1\n");
-	result_f = ft_printf("-->|%2d|<--\n", d);
-	result_r =    printf("-->|%2d|<--\n", d);
-	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-
-	printf("case2\n");
-	result_f = ft_printf("-->|%8d|<--\n", d);
-	result_r =    printf("-->|%8d|<--\n", d);
-	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-
-	printf("case3\n");
-	result_f = ft_printf("-->|%.3d|<--\n", d);
-	result_r =    printf("-->|%.3d|<--\n", d);
-	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-
-		printf("case4\n");
-	result_f = ft_printf("-->|%1.1d|<--\n", d);
-	result_r =    printf("-->|%1.1d|<--\n", d);
-	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-
-	printf("case5\n");
-	result_f = ft_printf("-->|%6.3d|<--\n", d);
-	result_r =    printf("-->|%6.3d|<--\n", d);
-	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-
-	printf("case6\n");
-	result_f = ft_printf("-->|%.7d|<--\n", d);
-	result_r =    printf("-->|%.7d|<--\n", d);
-	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-
-	printf("case7\n");
-	result_f = ft_printf("-->|%4.7d|<--\n", d);
-	result_r =    printf("-->|%4.7d|<--\n", d);
-	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
-
-	printf("case8\n");
-	result_f = ft_printf("-->|%10.7d|<--\n", d);
-	result_r =    printf("-->|%10.7d|<--\n", d);
-	printf("result_f = %d\nresult_r = %d\n\n", result_f, result_r);
+	char	*s = "as";
+	ft_printf("%p",s);
+	printf("\n%p", s);
 }
