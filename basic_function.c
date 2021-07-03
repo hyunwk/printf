@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/03 16:25:41 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/03 16:57:36 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/03 17:38:44 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,5 @@ void	init_info(t_info *info)
 	info->left_align = 0;
 	info->asterisk = 0;
 	info->dot = -1;
-	info->prec = -1;
+	info->prec = 0;
 }

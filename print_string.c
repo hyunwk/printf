@@ -6,12 +6,23 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 22:14:00 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/03 16:56:16 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/03 17:31:13 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
+///////////////
+///////////////print_str function has deleted, need to add before submit
+///////////////
+///////////////
+///////////////
+///////////////
+///////////////
+///////////////
+///////////////
+///////////////
+///////////////
+///////////////
 void	print_multi_str(int time, t_info *info)
 {
 	int		idx;
@@ -24,35 +35,6 @@ void	print_multi_str(int time, t_info *info)
 		c = ' ';
 	while (idx++ < time)
 		ft_putchar(c, info);
-}
-
-int	print_str(char *s, t_info *info)
-{
-	int	space_len;
-
-	space_len = (int)ft_strlen(s) - info->width ;
-	if (!s)
-		return (ERR);
-	if (space_len >= 0 && info->dot != -1 && (int)ft_strlen(s) > info->prec)
-	{
-		if (info->width > info->prec)
-			print_multi_str(info->width - info->prec, info);
-		ft_putstr(s, info->prec, info);
-	}
-	else if (space_len >= 0 && \
-			((int)ft_strlen(s) <= info->prec || info->prec == -1))
-		ft_putstr(s, (int)ft_strlen(s), info);
-	else if (info->left_align)
-	{
-		ft_putstr(s, (int)ft_strlen(s), info);
-		print_multi_str(info->width - (int)ft_strlen(s), info);
-	}
-	else
-	{
-		print_multi_str(info->width - (int)ft_strlen(s), info);
-		ft_putstr(s, (int)ft_strlen(s), info);
-	}
-	return (1);
 }
 
 int	print_char(char c, t_info *info)

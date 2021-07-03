@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/03 16:56:49 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/03 18:46:52 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,17 @@ int	get_format_info(const char *line, t_info *info, va_list *ap)
 	int	idx;
 
 	idx = 0;
-	if (line[idx] && '1' <= line[idx] && line[idx] <= '9')
+	if (ft_strchr(FLAG, line[idx]))
+		get_flags(line[idx++], info);
+	if ('1' <= line[idx] && line[idx] <= '9')
 		idx += is_num(&line[idx], info);
 	while (ft_strchr(FLAG, line[idx]))
 	{
 		get_flags(line[idx], info);
-		if ('*' == line[idx])
+		if ('*' == line[idx++])
 			get_asterisk(info, ap);
-		idx++;
 	}
-	if (is_num(line + idx, info) && !info->asterisk)
+	if ('1' <= line[idx] && line[idx] <= '9' && !info->asterisk)
 		idx += is_num(line + idx, info);
 	if (ft_strchr(TYPE, line[idx]) || line[idx] == '%')
 		info->type = line[idx++];
@@ -79,7 +80,7 @@ int	check_format(const char *line, t_info *info, va_list *ap)
 
 	init_info(info);
 	rtn = get_format_info(line, info, ap);
-	if (*line == '%')
+	if (info->type == '%')
 		return (print_char('%', info) + rtn);
 	if (rtn == ERR)
 		return (ERR);
@@ -123,9 +124,46 @@ int	ft_printf(const char *format, ...)
 	va_end(ap);
 	return (info->size);
 }
+
+int	print_str(char *s, t_info *info)
+{
+	int	space_len;
+
+	space_len = (int)ft_strlen(s) - info->width ;
+	if (!s)
+		return (ERR);
+	// len > width && has precise        &&  len > prec
+	if (space_len >= 0 && info->dot != -1 && (int)ft_strlen(s) > info->prec)
+	{
+		// width > prec              &&     has precise  &&   right_align
+		if (info->width > info->prec && info->prec != -1 && !info->left_align)
+			print_multi_str(info->width - info->prec, info);
+		ft_putstr(s, info->prec, info);
+		// width > prec              &&     has precise  &&   left_align
+		if (info->width > info->prec && info->prec != -1 && info->left_align)
+			print_multi_str(info->width - info->prec, info);
+	}
+	//len > width && ( len <= prec  || no prec)
+	else if (space_len >= 0 && \
+			((int)ft_strlen(s) <= info->prec || info->prec == -1))
+		ft_putstr(s, (int)ft_strlen(s), info);
+	// left_align
+	else if (info->left_align)
+	{
+		ft_putstr(s, (int)ft_strlen(s), info);
+		print_multi_str(info->width - (int)ft_strlen(s), info);
+	}
+	// right_align
+	else
+	{
+		print_multi_str(info->width - (int)ft_strlen(s), info);
+		ft_putstr(s, (int)ft_strlen(s), info);
+	}
+	return (1);
+}
 #include<stdio.h>
 int main()
 {
-	ft_printf("%5%");
-	printf("%5%");
+	ft_printf("%7.3s","hello");
+	printf("%7.3s","hello");
 }
