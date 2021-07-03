@@ -6,7 +6,7 @@
 #    By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/02 21:30:15 by hyunwkim          #+#    #+#              #
-#    Updated: 2021/07/02 22:32:11 by hyunwkim         ###   ########.fr        #
+#    Updated: 2021/07/03 16:57:56 by hyunwkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		= libftprintf.a
 LIBFT		= libft
 LIBFT_LIB	= libft.a
 
-SRCS		= ./ft_printf.c ./init_info.c /print_number.c ./print_string.c
+SRCS		= ./ft_printf.c ./print_number.c ./print_string.c ./basic_function.c
 
 OBJS		= $(SRCS:.c=.o)
 INCS		= .

@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/01 15:56:40 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 21:40:55 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/05/04 15:54:36 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/06/08 14:29:42 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putchar(char c, t_info *info)
+void				*ft_memset(void *b, int c, size_t len)
 {
-	write(1, &c, 1);
-	info->size += 1;
+	size_t			idx;
+	unsigned char	*p;
+
+	p = (unsigned char*)b;
+	idx = 0;
+	while (idx < len)
+		p[idx++] = c;
+	return (b);
 }

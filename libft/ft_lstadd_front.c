@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/02 18:49:40 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 22:15:53 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/05/14 17:56:03 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/06/08 15:43:00 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putnbr(int n, t_info *info)
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	if (n < 0)
+	if (!(*lst))
+		*lst = new;
+	else
 	{
-		ft_putchar('-', info);
-		n = -n;
+		new->next = (*lst);
+		(*lst) = new;
 	}
-	if (n >= 10)
-	{
-		ft_putnbr(n / 10, info);
-		ft_putchar(n % 10 + '0', info);
-	}
-	if (n < 10)
-		ft_putchar(n % 10 + '0', info);
-	return (n);
 }

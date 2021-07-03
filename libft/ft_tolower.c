@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/04 14:49:06 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/03 16:42:05 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/05/04 14:47:27 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/06/08 15:18:50 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+int		ft_tolower(int c)
 {
-	size_t	len;
-
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
+	if ('A' <= c && c <= 'Z')
+		c += 32;
+	return (c);
 }

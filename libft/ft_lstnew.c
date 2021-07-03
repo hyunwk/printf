@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/04 14:49:06 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/03 16:42:05 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/05/14 16:40:00 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/06/07 20:54:20 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+t_list		*ft_lstnew(void *content)
 {
-	size_t	len;
+	t_list	*list;
 
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
+	if (!(list = (t_list *)malloc(sizeof(t_list))))
+		return (0);
+	list->content = content;
+	list->next = 0;
+	return (list);
 }

@@ -1,23 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/04 14:49:06 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/03 16:42:05 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/05/04 13:46:21 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/05/19 18:59:28 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+char		*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	size_t	len;
+	size_t	find_len;
+	size_t	i;
+	size_t	j;
 
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
+	i = 0;
+	find_len = 0;
+	if (!(*needle))
+		return ((char *)haystack);
+	while (haystack[i] && i < len)
+	{
+		j = 0;
+		while (haystack[i + j] && haystack[i + j] == needle[j] && i + j < len)
+		{
+			j++;
+			if (!needle[j])
+				return ((char *)haystack + i);
+		}
+		i++;
+	}
+	return ((char *)0);
 }

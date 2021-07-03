@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/04 14:49:06 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/03 16:42:05 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/05/06 15:21:10 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/06/08 15:22:29 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+char				*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t	len;
+	char			*ptr;
+	unsigned int	s_len;
 
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
+	if (!s)
+		return (0);
+	if ((unsigned int)ft_strlen(s) <= start)
+		return (ft_strdup(""));
+	s_len = ft_strlen(s + start);
+	if (s_len > len)
+		s_len = len;
+	if (!(ptr = (char *)malloc(sizeof(char) * (s_len + 1))))
+		return (NULL);
+	ft_strlcpy(ptr, s + start, len + 1);
+	return (ptr);
 }

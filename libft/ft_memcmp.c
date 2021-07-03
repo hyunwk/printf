@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
+/*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/01 15:57:32 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 21:41:32 by hyunwkim         ###   ########.fr       */
+/*   Created: 2021/05/07 15:15:01 by hyunwkim          #+#    #+#             */
+/*   Updated: 2021/05/19 18:50:32 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr(char *s, int time, t_info *info)
+int					ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int	idx;
+	unsigned char	*p1;
+	unsigned char	*p2;
+	size_t			idx;
 
+	p1 = (unsigned char *)s1;
+	p2 = (unsigned char *)s2;
 	idx = 0;
-	while (idx < time)
+	while (idx < n)
 	{
-		ft_putchar(*s, info);
-		s++;
+		if (p1[idx] != p2[idx])
+			return (p1[idx] - p2[idx]);
 		idx++;
 	}
+	return (0);
 }

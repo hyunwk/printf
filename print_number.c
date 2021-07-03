@@ -6,11 +6,11 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 22:13:01 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/02 22:45:53 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/03 16:17:38 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
 int	is_num(const char *s, t_info *info)
 {
