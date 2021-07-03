@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/03 21:02:59 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/03 21:22:03 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,22 +133,28 @@ int	print_str(char *s, t_info *info)
 	{
 		if (info->dot == 1 && info->width > info->prec && !info->left_align)
 			print_multi_str(info->width - info->prec, info);
+
 		if (info->prec <= (int)ft_strlen(s) && info->dot == 1)
 			ft_putstr(s, info->prec, info);
+
 		else
 			ft_putstr(s, ft_strlen(s), info);
+		
 		if (info->dot == 1 && info->width > info->prec && info->left_align)
 			print_multi_str(info->width - info->prec, info);
 	} 
 	else 
 	{
+//		print_str_bigger_width(s, info);
 		if (info->width > (int)ft_strlen(s))
 		{
 			if (info->prec < (int)ft_strlen(s) && info->dot == 1)
 			{
 				if (!info->left_align)
 					print_multi_str(info->width - info->prec, info);
+
 				ft_putstr(s, info->prec, info);
+
 				if (info->left_align)
 					print_multi_str(info->width - info->prec, info);
 			}
@@ -156,7 +162,9 @@ int	print_str(char *s, t_info *info)
 			{
 				if (!info->left_align)
 					print_multi_str(info->width - (int)ft_strlen(s), info);
-				ft_putstr(s, (int)ft_strlen(s), info);
+
+				ft_putstr(s, ft_strlen(s), info);
+
 				if (info->left_align)
 					print_multi_str(info->width - (int)ft_strlen(s), info);
 			}
@@ -166,16 +174,66 @@ int	print_str(char *s, t_info *info)
 			if ((int)ft_strlen(s) > info->prec && info->dot == 1 )
 				ft_putstr(s, info->prec, info);
 			else
-				ft_putstr(s, (int)ft_strlen(s), info);
+				ft_putstr(s, ft_strlen(s), info);
 		}
 	}
 	if (!ft_strncmp(s,"(null)", 6))
 		free(s);
 	return (1);
 }
+
+int	get_int_digits(int n)
+{
+	int	i;
+
+	i = 0;
+	if (!n)
+		return (1);
+	if (n < 0)
+	{
+		n *= -1;
+		i++;
+	}
+	while (n)
+	{
+		n /= 10;
+		i++;
+	}
+	return (i);
+}
+
+int	print_num(int n, t_info *info)
+{
+	if (info->left_align)
+	{
+		ft_putnbr(n, info);
+		if (info->width > get_int_digits(n))
+			print_multi_str(info->width - get_int_digits(n), info);
+	}
+	else
+	{
+		if (info->prec > get_int_digits(n))
+		{
+			print_multi_str(info->width - info->prec - is_minus(n), info);
+			info->zero = 1;
+		}
+		else if (info->width > get_int_digits(n))
+			print_multi_str(info->width - get_int_digits(n), info);
+		if (is_minus(n))
+		{
+			ft_putchar('-', info);
+			n *= -1;
+		}
+		if (info->prec > get_int_digits(n))
+			print_multi_str(info->prec - get_int_digits(n), info);
+		ft_putnbr(n, info);
+	}
+	return (1);
+}
+
 //#include<stdio.h>
 //int main()
 //{
-//	ft_printf("%-9.1s\n", NULL);
-//	printf("%-9.1s\n", NULL);
+//	ft_printf("%3i\n", 0);
+//	printf("%3i", 0);
 //}
