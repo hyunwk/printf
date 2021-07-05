@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/03 21:22:03 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/05 13:12:50 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,30 +202,79 @@ int	get_int_digits(int n)
 	return (i);
 }
 
+int	is_minus(int n)
+{
+	return (n < 0);
+}
+
+int	is_num(const char *s, t_info *info)
+{
+	int	idx;
+	int	num;
+
+	idx = 0;
+	num = 0;
+	while ('0' <= s[idx] && s[idx] <= '9')
+	{
+		num = num * 10 + s[idx] - '0';
+		idx++;
+	}
+	if (!info->width && info->dot == -1)
+		info->width = num;
+	else if (info->dot != -1)
+		info->prec = num;
+	return (idx);
+}
+
+void	print_multi_str(int time, t_info *info)
+{
+	int		idx;
+	char	c;
+
+	idx = 0;
+	if (info->left_align && info->zero)
+		c = '0';
+	else if (!info->left_align && info->zero)
+		c = '0';
+	else
+		c = ' ';
+	while (idx++ < time)
+		ft_putchar(c, info);
+}
+
 int	print_num(int n, t_info *info)
 {
 	if (info->left_align)
 	{
+		if (info->prec > get_int_digits(n))
+		{
+			info->zero = 1;
+			print_multi_str(info->prec - get_int_digits(n), info);
+			info->zero = 0;
+		}
 		ft_putnbr(n, info);
-		if (info->width > get_int_digits(n))
+		if (info->width > info->prec && info->prec > get_int_digits(n))
+			print_multi_str(info->width - info->prec, info);
+		else if (info->width > get_int_digits(n))
 			print_multi_str(info->width - get_int_digits(n), info);
 	}
 	else
 	{
-		if (info->prec > get_int_digits(n))
+		if (get_int_digits(n) < info->prec)
 		{
 			print_multi_str(info->width - info->prec - is_minus(n), info);
 			info->zero = 1;
 		}
-		else if (info->width > get_int_digits(n))
-			print_multi_str(info->width - get_int_digits(n), info);
-		if (is_minus(n))
-		{
+		if (is_minus(n) && info->zero)
 			ft_putchar('-', info);
+		if (info->width > info->prec && info->prec > get_int_digits(n) && info->dot == 1)
+			print_multi_str(info->prec - get_int_digits(n) + is_minus(n), info);
+		else if (get_int_digits(n) < info->width)
+			print_multi_str(info->width - get_int_digits(n), info);
+		else if (get_int_digits(n) < info->prec)
+			print_multi_str(info->prec - get_int_digits(n) + is_minus(n), info);
+		if (is_minus(n) && info->zero)
 			n *= -1;
-		}
-		if (info->prec > get_int_digits(n))
-			print_multi_str(info->prec - get_int_digits(n), info);
 		ft_putnbr(n, info);
 	}
 	return (1);
@@ -234,6 +283,6 @@ int	print_num(int n, t_info *info)
 //#include<stdio.h>
 //int main()
 //{
-//	ft_printf("%3i\n", 0);
-//	printf("%3i", 0);
+//	ft_printf("%-8.5i\n",75);
+//	printf("%-8.5i\n",75);
 //}
