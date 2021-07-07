@@ -6,67 +6,19 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/05 14:13:47 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/07 19:43:50 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-void	get_flags(char c, t_info *info)
-{
-	if (c == '-')
-		info->left_align = 1;
-	if (c == '.')
-		info->dot = 1;
-	if (c == '0')
-		info->zero = 1;
-}
-
-void	get_asterisk(t_info *info, va_list *ap)
-{
-	int	num;
-
-	info->asterisk = 1;
-	num = va_arg(*ap, int);
-	if (num < 0)
-	{
-		if (info->dot == -1)
-		{
-			info->width = num * -1;
-			info->left_align = 1;
-		}
-		else
-		{
-			info->asterisk = -1;
-			info->dot = -1;
-		}
-	}
-	else if (!info->width)
-	{
-		if (info->dot == -1)
-			info->width = num;
-		else
-			info->prec = num;
-	}
-}
 
 int	get_format_info(const char *line, t_info *info, va_list *ap)
 {
 	int	idx;
 
 	idx = 0;
-	while (ft_strchr(FLAG, line[idx]))
-		get_flags(line[idx++], info);
 	if ('1' <= line[idx] && line[idx] <= '9')
 		idx += is_num(&line[idx], info);
-	while (ft_strchr(FLAG, line[idx]))
-	{
-		get_flags(line[idx], info);
-		if ('*' == line[idx++])
-			get_asterisk(info, ap);
-	}
-	if ('1' <= line[idx] && line[idx] <= '9' && !info->asterisk)
-		idx += is_num(line + idx, info);
 	if (ft_strchr(TYPE, line[idx]) || line[idx] == '%')
 		info->type = line[idx++];
 	else
@@ -266,13 +218,41 @@ int	print_num(int n, t_info *info)
 	{
 		if (get_int_digits(n) < info->prec)
 		{
+			info->zero = 0;
 			print_multi_str(info->width - info->prec - is_minus(n), info);
 			info->zero = 1;
 		}
+		//if (is_minus(n) && info->zero && info->width < get_int_digits(n))
 		if (is_minus(n) && info->zero)
+		{
+			if (info->width < get_int_digits(n))
+				n *= -1;
 			ft_putchar('-', info);
-		if (info->width > info->prec && info->prec > get_int_digits(n) && info->dot == 1)
-			print_multi_str(info->prec - get_int_digits(n) + is_minus(n), info);
+		}
+//		if (info->width > info->prec && info->prec >= get_int_digits(n) && info->dot == 1)
+//			print_multi_str(info->prec - get_int_digits(n) + is_minus(n), info);
+
+//		if (info->width > info->prec && info->prec >= get_int_digits(n) && info->dot == 1)
+//		{
+//			print_multi_str(info->width - info->prec + is_minus(n), info);
+//			if (info->prec > get_int_digits(n))
+//			{
+//				info->zero = 1;
+//				print_multi_str(info->prec - get_int_digits(n), info);
+//				info->zero = 0;
+//			}
+//		}
+		if (get_int_digits(n) >= info->prec && info->width > get_int_digits(n) && info->dot == 1)
+		{
+			info->zero = 0;
+			print_multi_str(info->width - get_int_digits(n), info);
+			if (get_int_digits(n) < info->prec && info->width > info->prec)
+			{
+				info->zero = 1;
+				print_multi_str(info->prec - get_int_digits(n), info);
+				info->zero = 0;
+			}
+		}
 		else if (get_int_digits(n) < info->width)
 			print_multi_str(info->width - get_int_digits(n), info);
 		else if (get_int_digits(n) < info->prec)
@@ -336,9 +316,11 @@ int	print_hex(unsigned long long n, t_info *info)
 	return (1);
 }
 
-//#include<stdio.h>
-//int main()
-//{
-//	ft_printf("%-10.5i\n", -216);
-//	printf("%-10.5i\n", -216);
-//}
+//:#include<stdio.h>
+//:int main()
+//:{
+//:	ft_printf("%08.3i\n", 8375);
+//:	printf("%8.3i\n", 8375);
+//:	ft_printf("%08.3i\n", -8375);
+//:	printf("%8.3i\n", -8375);
+//:}
