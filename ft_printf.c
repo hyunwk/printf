@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/03 21:22:03 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/08 12:45:49 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,26 +206,56 @@ int	print_num(int n, t_info *info)
 {
 	if (info->left_align)
 	{
+		if (info->prec > get_int_digits(n))
+		{
+			if (is_minus(n))
+			{
+				ft_putchar('-', info);
+				n *= -1;
+				info->num_neg = 1;
+			}
+			info->zero = 1;
+			print_multi_str(info->prec - get_int_digits(n), info);
+			info->zero = 0;
+		}
 		ft_putnbr(n, info);
-		if (info->width > get_int_digits(n))
+		if (info->width > info->prec && info->prec > get_int_digits(n))
+			print_multi_str(info->width - info->prec - info->num_neg, info);
+		else if (info->width > get_int_digits(n))
 			print_multi_str(info->width - get_int_digits(n), info);
 	}
 	else
 	{
-		if (info->prec > get_int_digits(n))
+		if (get_int_digits(n) < info->prec)
 		{
+			info->zero = 0;
 			print_multi_str(info->width - info->prec - is_minus(n), info);
 			info->zero = 1;
 		}
-		else if (info->width > get_int_digits(n))
-			print_multi_str(info->width - get_int_digits(n), info);
-		if (is_minus(n))
+		//if (is_minus(n) && info->zero && info->width < get_int_digits(n))
+		if (is_minus(n) && info->zero)
 		{
+			if (info->width < get_int_digits(n))
+				n *= -1;
 			ft_putchar('-', info);
-			n *= -1;
 		}
-		if (info->prec > get_int_digits(n))
-			print_multi_str(info->prec - get_int_digits(n), info);
+		if (get_int_digits(n) >= info->prec && info->width > get_int_digits(n) && info->dot == 1)
+		{
+			info->zero = 0;
+			print_multi_str(info->width - get_int_digits(n), info);
+			if (get_int_digits(n) < info->prec && info->width > info->prec)
+			{
+				info->zero = 1;
+				print_multi_str(info->prec - get_int_digits(n), info);
+				info->zero = 0;
+			}
+		}
+		else if (get_int_digits(n) < info->width)
+			print_multi_str(info->width - get_int_digits(n), info);
+		else if (get_int_digits(n) < info->prec)
+			print_multi_str(info->prec - get_int_digits(n) + is_minus(n), info);
+		if (is_minus(n) && info->zero)
+			n *= -1;
 		ft_putnbr(n, info);
 	}
 	return (1);
