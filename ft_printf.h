@@ -6,14 +6,14 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/29 14:00:07 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/08 18:29:55 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:48:12 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 # define ERR -1
-# define TYPE "cspdiuxX"
+# define TYPE "cspdiuxX%"
 
 # include <stdarg.h>
 # include <stdlib.h>
