@@ -6,73 +6,11 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/08 17:42:04 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:05:41 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-int	check_format(const char *line, va_list ap, int *rtn)
-{
-	char type;
-	if (ft_strchr(TYPE, line[0]) || line[0] == '%')
-		type = line[0];
-	else
-		return (ERR);
-	if (type == '%')
-		ft_putchar('%', rtn);
-	else if (type == 'c')
-		ft_putchar(va_arg(ap, int), rtn);
-	else if (type == 's')
-		print_str(va_arg(ap, char *), rtn);
-	else if (type == 'p' )
-		print_hex(va_arg(ap, unsigned long long), type, rtn);
-	else if (type == 'x' || type == 'X')
-		print_hex(va_arg(ap, unsigned int), type, rtn);
-	else if (type == 'd' || type == 'i')
-		ft_putnbr(va_arg(ap, int), type, rtn);
-	else if (type == 'u')
-		ft_putnbr(va_arg(ap, unsigned int), type, rtn);
-	return (2);
-}
-
-int	print_hex(unsigned long long n, char type, int *rtn)
-{
-	char	*hex_arr;
-	int		idx;
-
-	idx = get_hex_digits(n);
-	hex_arr = (char *)malloc(sizeof(char) * (idx + 1));
-	if (!hex_arr)
-		return (ERR);
-	if (type == 'p')
-		ft_putstr("0x", rtn);
-	if (n)
-	{
-		while (n)
-		{
-			hex_arr[--idx] = get_base(type)[n % 16];
-			n /= 16;
-		}
-		print_str(hex_arr, rtn);
-	}
-	else
-		ft_putchar('0', rtn);
-	free(hex_arr);
-	return (1);
-}
-
-void	ft_putstr(char *s, int *rtn)
-{
-	int	idx;
-
-	idx = 0;
-	while (idx < (int)ft_strlen(s))
-	{
-		ft_putchar(s[idx], rtn);
-		idx++;
-	}
-}
 
 int	ft_printf(const char *format, ...)
 {
@@ -99,10 +37,56 @@ int	ft_printf(const char *format, ...)
 	return (rtn);
 }
 
-void	ft_putchar(char c, int *rtn)
+int	check_format(const char *line, va_list ap, int *rtn)
 {
-	write(1, &c, 1);
-	(*(rtn))++;
+	char	type;
+
+	if (ft_strchr(TYPE, line[0]) || line[0] == '%')
+		type = line[0];
+	else
+		return (ERR);
+	if (type == '%')
+		ft_putchar('%', rtn);
+	else if (type == 'c')
+		ft_putchar(va_arg(ap, int), rtn);
+	else if (type == 's')
+		print_str(va_arg(ap, char *), rtn);
+	else if (type == 'p' )
+		print_hex(va_arg(ap, unsigned long long), type, rtn);
+	else if (type == 'x' || type == 'X')
+		print_hex(va_arg(ap, unsigned int), type, rtn);
+	else if (type == 'd' || type == 'i')
+		print_nbr(va_arg(ap, int), type, rtn);
+	else if (type == 'u')
+		print_nbr(va_arg(ap, unsigned int), type, rtn);
+	return (2);
+}
+
+int	print_hex(unsigned long long n, char type, int *rtn)
+{
+	char	*hex_arr;
+	int		hex_len;
+
+	hex_len = get_hex_digits(n);
+	hex_arr = (char *)malloc(sizeof(char) * (hex_len + 1));
+	if (!hex_arr)
+		return (ERR);
+	if (type == 'p')
+		ft_putstr("0x", rtn);
+	if (n)
+	{
+		hex_arr[hex_len] = 0;
+		while (n)
+		{
+			hex_arr[--hex_len] = get_base(type)[n % 16];
+			n /= 16;
+		}
+		print_str(hex_arr, rtn);
+	}
+	else
+		ft_putchar('0', rtn);
+	free(hex_arr);
+	return (1);
 }
 
 int	print_str(char *s, int *rtn)
@@ -110,38 +94,14 @@ int	print_str(char *s, int *rtn)
 	if (!s)
 		s = ft_strdup("(null)");
 	ft_putstr(s, rtn);
-	if (!ft_strncmp(s,"(null)", 6))
+	if (!ft_strncmp(s, "(null)", 6))
 		free(s);
 	return (2);
 }
 
-char	*get_base(char c)
+int	print_nbr(long long n, char type, int *rtn)
 {
-	if (c == 'p' || c == 'x')
-		return ("0123456789abcdef");
-	else if (c == 'X')
-		return ("0123456789ABCDEF");
-	return (0);
-}
-
-int	get_hex_digits(int n)
-{
-	int	i;
-
-	i = 0;
-	if (!n)
-		return (1);
-	while (n)
-	{
-		n /= 16;
-		i++;
-	}
-	return (i);
-}
-
-int	ft_putnbr(long long n, char type, int *rtn)
-{
-	long long temp;
+	long long	temp;
 
 	temp = n;
 	if (type == 'd' && (temp < -2147483648 || temp > 2147483648))
@@ -155,17 +115,10 @@ int	ft_putnbr(long long n, char type, int *rtn)
 	}
 	if (temp >= 10)
 	{
-		ft_putnbr(temp / 10, type, rtn);
+		print_nbr(temp / 10, type, rtn);
 		ft_putchar(temp % 10 + '0', rtn);
 	}
 	if (temp < 10)
 		ft_putchar(temp % 10 + '0', rtn);
 	return (1);
-}
-
-#include<stdio.h>
-int main()
-{
-	printf("%d\n", -2147483647);
-	printf("%d\n", 2147483647);
 }
