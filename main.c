@@ -102,11 +102,11 @@ int main()
 	ft_printf("%X\n",2147483647);
 	printf("%X\n",2147483647);
 	
-	ft_printf("%X\n", 16);
-	printf("%X\n", 16);
+	ft_printf("%X\n", 1996);
+	printf("%X\n", 1996);
 	
-	ft_printf("%X\n", -16);
-	printf("%X\n", -16);
+	ft_printf("%X\n", -1226);
+	printf("%X\n", -1226);
 	
 	ft_printf("====\ncheck %%\n====\n");
 	ft_printf("%%\n");

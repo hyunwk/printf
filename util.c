@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 17:47:04 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/08 18:05:53 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/08 21:07:33 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*get_base(char c)
 	return (0);
 }
 
-int	get_hex_digits(unsigned long long n)
+int	get_hex_len(unsigned long long n)
 {
 	int	i;
 
@@ -36,10 +36,11 @@ int	get_hex_digits(unsigned long long n)
 	return (i);
 }
 
-void	ft_putchar(char c, int *rtn)
+int	ft_putchar(char c, int *rtn)
 {
 	write(1, &c, 1);
 	(*(rtn))++;
+	return (0);
 }
 
 int	ft_putnbr(long long n, char type, int *rtn)
@@ -66,7 +67,7 @@ int	ft_putnbr(long long n, char type, int *rtn)
 	return (1);
 }
 
-void	ft_putstr(char *s, int *rtn)
+int	ft_putstr(char *s, int *rtn)
 {
 	int	idx;
 
@@ -76,4 +77,5 @@ void	ft_putstr(char *s, int *rtn)
 		ft_putchar(s[idx], rtn);
 		idx++;
 	}
+	return (0);
 }
