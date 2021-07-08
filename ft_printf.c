@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/08 18:05:41 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:12:05 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	ft_printf(const char *format, ...)
 		if (*format == '%')
 		{
 			written_len = check_format(format + 1, ap, &rtn);
+			if (written_len == -1)
+				return (ERR);
 			format += written_len;
 		}
 		else
@@ -41,7 +43,7 @@ int	check_format(const char *line, va_list ap, int *rtn)
 {
 	char	type;
 
-	if (ft_strchr(TYPE, line[0]) || line[0] == '%')
+	if (ft_strchr(TYPE, line[0]))
 		type = line[0];
 	else
 		return (ERR);
