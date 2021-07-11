@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/05 14:13:47 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/11 14:43:34 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,7 @@ int	print_num(int n, t_info *info)
 			{
 				ft_putchar('-', info);
 				n *= -1;
-				info->num_neg = 1;
+				//info->num_neg = 1;
 			}
 			info->zero = 1;
 			print_multi_str(info->prec - get_int_digits(n), info);
@@ -258,7 +258,8 @@ int	print_num(int n, t_info *info)
 		}
 		ft_putnbr(n, info);
 		if (info->width > info->prec && info->prec > get_int_digits(n))
-			print_multi_str(info->width - info->prec - info->num_neg, info);
+			//print_multi_str(info->width - info->prec - info->num_neg, info);
+			print_multi_str(info->width - info->prec, info);
 		else if (info->width > get_int_digits(n))
 			print_multi_str(info->width - get_int_digits(n), info);
 	}
@@ -316,21 +317,25 @@ char	*get_base(char c)
 int	print_hex(unsigned long long n, t_info *info)
 {
 	char	*hex_arr;
-	int		i;
+	int		hex_len;
 
-	i = 8;
-	hex_arr = (char *)malloc(sizeof(char) * 9);
+	hex_len = get_hex_len(n);
+	hex_arr = (char *)malloc(sizeof(char) * (hex_len + 1));
 	if (!hex_arr)
 		return (ERR);
-	if (info->type == 'p' || info->type == 'x')
+	hex_arr[hex_len] = 0;
+	if (info->type == 'p')
 		ft_putstr("0x", 2, info);
-	else if (info->type == 'X')
-		ft_putstr("0X", 2, info);
-	while (n)
+	if (n)
 	{
-		hex_arr[i--] = get_base(info->type)[n % 16];
-		n /= 16;
+		while (n)
+		{
+			hex_arr[--hex_len] = get_base(info->type)[n % 16];
+			n /= 16;
+		}
 	}
+	else 
+		hex_arr[0] = '0';
 	print_str(hex_arr, info);
 	free(hex_arr);
 	return (1);
