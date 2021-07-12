@@ -6,11 +6,12 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/12 02:09:32 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/12 12:34:44 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "libft/libft.h"
 
 void	get_flags(char c, t_info *info)
 {
@@ -88,8 +89,11 @@ int	check_format(const char *line, t_info *info, va_list *ap)
 		return (print_char(va_arg(*ap, int), info) + rtn);
 	if (info->type == 's')
 		return (print_str(va_arg(*ap, char *), info) + rtn);
-	if (info->type == 'p' || info->type == 'x' || info->type == 'X')
+	//if (info->type == 'p' || info->type == 'x' || info->type == 'X')
+	if (info->type == 'p')
 		return (print_hex(va_arg(*ap, unsigned long long), info) + rtn);
+	if (info->type == 'x' || info->type == 'X')
+		return (print_hex(va_arg(*ap, unsigned int), info) + rtn);
 	if (info->type == 'd' || info->type == 'i')
 		return (print_num(va_arg(*ap, int), info) + rtn);
 	if (info->type == 'u')
@@ -376,13 +380,43 @@ int	print_hex(unsigned long long n, t_info *info)
 	}
 	else 
 		hex_arr[0] = '0';
-	print_str(hex_arr, info);
+	//print_str(hex_arr, info);
+	print_num(ft_atoi(hex_arr), info);
 	free(hex_arr);
 	return (1);
 }
+int	get_hex_len(unsigned long long n)
+{
+	int	i;
 
+	i = 0;
+	if (!n)
+		return (1);
+	while (n)
+	{
+		n /= 16;
+		i++;
+	}
+	return (i);
+}
+void	ft_putnbr(long long n, t_info *info)
+{
+	if (n < 0)
+	{
+		ft_putchar('-', info);
+		n = -n;
+	}
+	if (n >= 10)
+	{
+		ft_putnbr(n / 10, info);
+		ft_putchar(n % 10 + '0', info);
+	}
+	if (n < 10)
+		ft_putchar(n % 10 + '0', info);
+}
 //#include<stdio.h>
 //int main()
 //{
-//	ft_printf("%u\n", 4294967295u);
+//	ft_printf("%.5x\n", 21);
+//	printf("%.5x\n", 21);
 //}
