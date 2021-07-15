@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 18:36:08 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/15 19:10:27 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -564,34 +564,34 @@ void	ft_putnbr(long long n, t_info *info)
 }
 
 
-//#include<stdio.h>
-//int main()
-//{
-//	ft_printf("%5.0i.\n", 0);
-//	printf("%5.0i.\n", 0);
-//	ft_printf("%p\n", NULL);
-//	printf("%p\n", NULL);
-//	ft_printf("%p\n", "Abc");
-//	printf("%p\n", "Abc");
-//	ft_printf("%-1.1d.\n",0);
-//	printf("%-1.1d.\n",0);
-//	ft_printf("%-.d.\n",0);
-//	printf("%-.d.\n",0);
-//	ft_printf("%-.d.\n",0);
-//	printf("%-.d.\n",0);
-//
-//	ft_printf("%-.0d.\n",0);
-//	printf("%-.0d.\n",0);
-//
-//
-//	ft_printf("%-.1d.\n",0);
-//	printf("%-.1d.\n",0);
-//
-//
-//	ft_printf("%-1.d.\n",0);
-//	printf("%-1.d.\n",0);
-//	ft_printf("%-d\n",0);
-//	printf("%-d\n",0);
-//	ft_printf("%1.d.\n",0);
-//	printf("%1.d.\n",0);
-//}
+#include<stdio.h>
+int main()
+{
+	ft_printf("%5.0i.\n", 0);
+	printf("%5.0i.\n", 0);
+	ft_printf("%p\n", NULL);
+	printf("%p\n", NULL);
+	ft_printf("%p\n", "Abc");
+	printf("%p\n", "Abc");
+	ft_printf("%-1.1d.\n",0);
+	printf("%-1.1d.\n",0);
+	ft_printf("%-.d.\n",0);
+	printf("%-.d.\n",0);
+	ft_printf("%-.d.\n",0);
+	printf("%-.d.\n",0);
+
+	ft_printf("%-.0d.\n",0);
+	printf("%-.0d.\n",0);
+
+
+	ft_printf("%-.1d.\n",0);
+	printf("%-.1d.\n",0);
+
+
+	ft_printf("%-1.d.\n",0);
+	printf("%-1.d.\n",0);
+	ft_printf("%-d\n",0);
+	printf("%-d\n",0);
+	ft_printf("%1.d.\n",0);
+	printf("%1.d.\n",0);
+}
