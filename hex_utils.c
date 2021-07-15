@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 20:01:35 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 20:02:01 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/15 20:25:18 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	parse_hex(unsigned long long n, t_info *info)
 		return (ERR);
 	hex_arr[hex_len] = 0;
 	if (info->type == 'p')
-		ft_strlcpy(hex_arr, "0x0",4);
+		ft_strlcpy(hex_arr, "0x0", 4);
 	if (n)
 	{
 		while (n)

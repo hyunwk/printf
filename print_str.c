@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 22:14:00 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 19:54:58 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/15 20:17:16 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	print_str(char *s, t_info *info)
 				ft_putstr(s, ft_strlen(s), info);
 		}
 	}
-	if (!ft_strncmp(s,"(null)", 6))
+	if (!ft_strncmp(s, "(null)", 6))
 		free(s);
 	return (1);
 }
@@ -59,13 +59,10 @@ void print_str_bigger_len(char *s, t_info *info)
 {
 	if (info->dot == 1 && info->width > info->prec && !info->left_align)
 		print_multi_str(info->width - info->prec, info);
-
 	if (info->prec <= (int)ft_strlen(s) && info->dot == 1)
 		ft_putstr(s, info->prec, info);
-
 	else
 		ft_putstr(s, ft_strlen(s), info);
-
 	if (info->dot == 1 && info->width > info->prec && info->left_align)
 		print_multi_str(info->width - info->prec, info);
 }
@@ -76,9 +73,7 @@ void print_str_bigger_width(char *s, t_info *info)
 	{
 		if (!info->left_align)
 			print_multi_str(info->width - info->prec, info);
-
 		ft_putstr(s, info->prec, info);
-
 		if (info->left_align)
 			print_multi_str(info->width - info->prec, info);
 	}
@@ -86,9 +81,7 @@ void print_str_bigger_width(char *s, t_info *info)
 	{
 		if (!info->left_align)
 			print_multi_str(info->width - (int)ft_strlen(s), info);
-
 		ft_putstr(s, ft_strlen(s), info);
-
 		if (info->left_align)
 			print_multi_str(info->width - (int)ft_strlen(s), info);
 	}
