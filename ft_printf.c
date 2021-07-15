@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 19:10:27 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/15 20:03:00 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,466 +132,46 @@ int	ft_printf(const char *format, ...)
 	return (info->size);
 }
 
-int	print_char(char c, t_info *info)
+void	init_info(t_info *info)
 {
-	if (info->left_align)
-	{
-		ft_putchar(c, info);
-		if (info->width)
-		{
-			info->zero = 0;
-			print_multi_str(info->width - 1, info);
-		}
-	}
-	else
-	{
-		if (info->width)
-			print_multi_str(info->width - 1, info);
-		ft_putchar(c, info);
-	}
-	return (1);
+	info->zero = 0;
+	info->width = 0;
+	info->left_align = 0;
+	info->asterisk = 0;
+	info->dot = -1;
+	info->prec = 0;
 }
 
-
-int	print_str(char *s, t_info *info)
-{
-	if (!s)
-		s = ft_strdup("(null)");
-	if ((int)ft_strlen(s) >= info->width && info->width > 0)
-		print_str_bigger_len(s, info);
-	else 
-	{
-		if (info->width > (int)ft_strlen(s))
-			print_str_bigger_width(s, info);
-		else
-		{
-			if ((int)ft_strlen(s) > info->prec && info->dot == 1 )
-				ft_putstr(s, info->prec, info);
-			else
-				ft_putstr(s, ft_strlen(s), info);
-		}
-	}
-	if (!ft_strncmp(s,"(null)", 6))
-		free(s);
-	return (1);
-}
-
-void print_str_bigger_len(char *s, t_info *info)
-{
-	if (info->dot == 1 && info->width > info->prec && !info->left_align)
-		print_multi_str(info->width - info->prec, info);
-
-	if (info->prec <= (int)ft_strlen(s) && info->dot == 1)
-		ft_putstr(s, info->prec, info);
-
-	else
-		ft_putstr(s, ft_strlen(s), info);
-	
-	if (info->dot == 1 && info->width > info->prec && info->left_align)
-		print_multi_str(info->width - info->prec, info);
-} 
-
-void print_str_bigger_width(char *s, t_info *info)
-{
-	if (info->prec < (int)ft_strlen(s) && info->dot == 1)
-	{
-		if (!info->left_align)
-			print_multi_str(info->width - info->prec, info);
-
-		ft_putstr(s, info->prec, info);
-
-		if (info->left_align)
-			print_multi_str(info->width - info->prec, info);
-	}
-	else
-	{
-		if (!info->left_align)
-			print_multi_str(info->width - (int)ft_strlen(s), info);
-
-		ft_putstr(s, ft_strlen(s), info);
-
-		if (info->left_align)
-			print_multi_str(info->width - (int)ft_strlen(s), info);
-	}
-}
-
-
-int	get_num_len(long long n)
-{
-	long long i;
-
-	i = 0;
-	if (!n)
-		return (1);
-	if (n < 0)
-	{
-		n *= -1;
-		i++;
-	}
-	while (n)
-	{
-		n /= 10;
-		i++;
-	}
-	return (i);
-}
-
-int	is_minus(int n)
-{
-	return (n < 0);
-}
-
-int	is_num(const char *s, t_info *info)
-{
-	int	idx;
-	int	num;
-
-	idx = 0;
-	num = 0;
-	while ('0' <= s[idx] && s[idx] <= '9')
-	{
-		num = num * 10 + s[idx] - '0';
-		idx++;
-	}
-	if (!info->width && info->dot == -1)
-		info->width = num;
-	else if (info->dot != -1)
-		info->prec = num;
-	return (idx);
-}
-
-void	print_multi_str(int time, t_info *info)
-{
-	int		idx;
-	char	c;
-
-	idx = 0;
-	if (info->zero)
-		c = '0';
-	else
-		c = ' ';
-	while (idx++ < time)
-		ft_putchar(c, info);
-}
-
-int print_num_left_bigger_width(long long *n, t_info *info)
-{
-	if (info->width > info->prec && info->prec > get_num_len(*n))
-	{
-		if (is_minus(*n))
-		{
-			ft_putchar('-', info);
-			*n *= -1;
-			info->width -= 1;
-		}
-		info->zero = 1;
-		print_multi_str(info->prec - get_num_len(*n), info);
-		ft_putnbr(*n, info);
-		info->zero = 0;
-		print_multi_str(info->width - info->prec, info);
-	}
-	else if (info->width >= get_num_len(*n) && get_num_len(*n) > info->prec)
-	{
-		if (!(*n) && info->dot != -1)
-			print_multi_str(info->width - get_num_len(*n) + 1, info);
-		else
-		{
-			ft_putnbr(*n, info);
-			print_multi_str(info->width - get_num_len(*n), info);
-		}
-	}
-	else
-		return (0);
-	return (1);
-}
-
-int print_num_left_else(long long *n, t_info *info)
-{
-	if (info->prec >= info->width ||  info->prec > get_num_len(*n))
-	{
-		if (is_minus(*n))
-		{
-			ft_putchar('-', info);
-			*n *= -1;
-		}
-		if (get_num_len(*n) > info->width)
-			info->zero = 1;
-		print_multi_str(info->prec - get_num_len(*n), info);
-		if (*n || info->dot != 1 || info->prec != 0)
-			ft_putnbr(*n, info);
-	}
-	else if (*n || info->prec > 0 || info->dot != 1)
-		ft_putnbr(*n, info);
-	return (1);
-}
-int print_num_right_bigger_prec(long long *n, t_info *info)
-{
-	if (info->prec >= get_num_len(*n))
-	{
-		if (info->width > info->prec)
-		{
-			info->zero = 0;
-			print_multi_str(info->width - info->prec - is_minus(*n), info);
-		}
-		if (is_minus(*n))
-		{
-			ft_putchar('-', info);
-			*n *= -1;
-		}
-		info->zero = 1;
-		print_multi_str(info->prec - get_num_len(*n), info);
-	}
-	else if (info->prec >= info->width && info->width > get_num_len(*n))
-		print_multi_str(info->prec - get_num_len(*n), info);
-	else
-		return (0);
-	return (1);
-}
-
-int print_num_right_else(long long *n, t_info *info)
-{
-	if (info->width >= get_num_len(*n) && get_num_len(*n) > info->prec)
-	{
-		if (is_minus(*n) && info->zero && info->dot == -1)
-		{
-			ft_putchar('-', info);
-			*n *= -1;
-			info->width -= 1;
-		}
-		if (info->dot == -1 && info->zero)
-			info->zero = 1;
-		else
-			info->zero = 0;
-		if (!(*n) && info->dot != -1)
-			print_multi_str(info->width - get_num_len(*n) + 1, info);
-		else
-			print_multi_str(info->width - get_num_len(*n), info);
-	}
-	return (1);
-}
-
-int	print_num(long long n, t_info *info)
-{
-	if (info->left_align)
-	{
-		if (print_num_left_bigger_width(&n, info))
-			;
-		else 
-			print_num_left_else(&n, info);
-	}
-	else 
-	{
-		if (print_num_right_bigger_prec(&n, info))
-			;
-		else
-			print_num_right_else(&n, info);
-
-		if (n || info->prec > 0 || info->dot != 1)
-			ft_putnbr(n, info);
-	}
-	return (1);
-}
-
-char	*get_base(char c)
-{
-	if (c == 'p' || c == 'x')
-		return ("0123456789abcdef");
-	else if (c == 'X')
-		return ("0123456789ABCDEF");
-	return (0);
-}
-
-int	parse_hex(unsigned long long n, t_info *info)
-{
-	char	*hex_arr;
-	int		hex_len;
-
-	hex_len = get_hex_len(n);
-	if (info->type == 'p')
-		hex_len += 2;
-	hex_arr = (char *)malloc(sizeof(char) * (hex_len + 1));
-	if (!hex_arr)
-		return (ERR);
-	hex_arr[hex_len] = 0;
-	if (info->type == 'p')
-		ft_strlcpy(hex_arr, "0x0",4);
-	if (n)
-	{
-		while (n)
-		{
-			hex_arr[--hex_len] = get_base(info->type)[n % 16];
-			n /= 16;
-		}
-	}
-	else if (info->type != 'p' || n)
-		hex_arr[0] = '0';
-	print_hex(hex_arr, info);
-	free(hex_arr);
-	return (1);
-}
-
-int print_hex_left_bigger_width(char *s, t_info *info)
-{
-	if (info->width > info->prec && info->prec > (int)ft_strlen(s))
-	{
-		info->zero = 1;
-		print_multi_str(info->prec - (int)ft_strlen(s), info);
-		ft_putstr(s, (int)ft_strlen(s), info);
-		info->zero = 0;
-		print_multi_str(info->width - info->prec, info);
-	}
-	else if (info->width > (int)ft_strlen(s) && (int)ft_strlen(s) > info->prec)
-	{
-		if (s[0] - '0' == 0 && info->dot == 1)
-			print_multi_str(info->width, info);
-		else
-		{
-			ft_putstr(s, (int)ft_strlen(s), info);
-			print_multi_str(info->width - (int)ft_strlen(s), info);
-		}
-	}
-	else
-		return (0);
-	return (1);
-}
-
-int print_hex_left_else(char *s, t_info *info)
-{
-	if (info->prec >= info->width ||  info->prec > (int)ft_strlen(s))
-	{
-		if ((int)ft_strlen(s) > info->width)
-			info->zero = 1;
-		print_multi_str(info->prec - (int)ft_strlen(s), info);
-		if (s[0] - '0' != 0)
-			ft_putstr(s, (int)ft_strlen(s), info);
-		else if (s[1] == 'x')
-			ft_putstr("0x", 2, info);
-	}
-	else 
-		ft_putstr(s, (int)ft_strlen(s), info);
-	return (0);
-}
-int print_hex_right_bigger_prec(char *s, t_info *info)
-{
-	if (info->prec > (int)ft_strlen(s))
-	{
-		if (info->width > info->prec)
-		{
-			info->zero = 0;
-			print_multi_str(info->width - info->prec, info);
-		}
-	
-		info->zero = 1;
-		print_multi_str(info->prec - (int)ft_strlen(s), info);
-	}
-	else if (info->prec >= info->width && info->width > (int)ft_strlen(s))
-		print_multi_str(info->prec - (int)ft_strlen(s), info);
-	else
-		return (0);
-	return (1);
-}
-
-int print_hex_right_else(char *s, t_info *info)
-{
-	if (info->width > (int)ft_strlen(s) && (int)ft_strlen(s) > info->prec)
-	{
-		if (info->dot == -1 && info->zero)
-			info->zero = 1;
-		else
-			info->zero = 0;
-		if (s[0] - '0' == 0 && info->dot == 1 && info->type == 'p')
-			print_multi_str(info->width - 2, info);
-		else if (s[0] - '0' == 0 && info->dot == 1)
-			print_multi_str(info->width, info);
-		else
-			print_multi_str(info->width - (int)ft_strlen(s), info);
-	}
-	return (0);
-}
-
-int	print_hex(char *s, t_info *info)
-{
-	if (info->left_align)
-	{
-		if (print_hex_left_bigger_width(s, info))
-			;
-		else 
-			print_hex_left_else(s, info);
-	}
-	else 
-	{
-		if (print_hex_right_bigger_prec(s, info))
-			;
-		else
-			print_hex_right_else(s, info);
-		if (info->prec > 0 || info->dot != 1 || (info->type == 'p' && ft_strncmp(s,"0x0",3)))
-			ft_putstr(s, (int)ft_strlen(s), info);
-		else if (info->type == 'p')
-			ft_putstr("0x", 2, info);
-	}
-	return (1);
-}
-
-int	get_hex_len(unsigned long long n)
-{
-	int	i;
-
-	i = 0;
-	if (!n)
-		return (1);
-	while (n)
-	{
-		n /= 16;
-		i++;
-	}
-	return (i);
-}
-
-void	ft_putnbr(long long n, t_info *info)
-{
-	if (n < 0)
-	{
-		ft_putchar('-', info);
-		n = -n;
-	}
-	if (n >= 10)
-	{
-		ft_putnbr(n / 10, info);
-		ft_putchar(n % 10 + '0', info);
-	}
-	if (n < 10)
-		ft_putchar(n % 10 + '0', info);
-}
-
-
-#include<stdio.h>
-int main()
-{
-	ft_printf("%5.0i.\n", 0);
-	printf("%5.0i.\n", 0);
-	ft_printf("%p\n", NULL);
-	printf("%p\n", NULL);
-	ft_printf("%p\n", "Abc");
-	printf("%p\n", "Abc");
-	ft_printf("%-1.1d.\n",0);
-	printf("%-1.1d.\n",0);
-	ft_printf("%-.d.\n",0);
-	printf("%-.d.\n",0);
-	ft_printf("%-.d.\n",0);
-	printf("%-.d.\n",0);
-
-	ft_printf("%-.0d.\n",0);
-	printf("%-.0d.\n",0);
-
-
-	ft_printf("%-.1d.\n",0);
-	printf("%-.1d.\n",0);
-
-
-	ft_printf("%-1.d.\n",0);
-	printf("%-1.d.\n",0);
-	ft_printf("%-d\n",0);
-	printf("%-d\n",0);
-	ft_printf("%1.d.\n",0);
-	printf("%1.d.\n",0);
-}
+//#include<stdio.h>
+//int main()
+//{
+//	ft_printf("%s%s\n", "abc","def");
+//	printf("%s%s\n", "abc","def");
+//	ft_printf("%5.0i.\n", 0);
+//	printf("%5.0i.\n", 0);
+//	ft_printf("%p\n", NULL);
+//	printf("%p\n", NULL);
+//	ft_printf("%p\n", "Abc");
+//	printf("%p\n", "Abc");
+//	ft_printf("%-1.1d.\n",0);
+//	printf("%-1.1d.\n",0);
+//	ft_printf("%-.d.\n",0);
+//	printf("%-.d.\n",0);
+//	ft_printf("%-.d.\n",0);
+//	printf("%-.d.\n",0);
+//
+//	ft_printf("%-.0d.\n",0);
+//	printf("%-.0d.\n",0);
+//
+//
+//	ft_printf("%-.1d.\n",0);
+//	printf("%-.1d.\n",0);
+//
+//
+//	ft_printf("%-1.d.\n",0);
+//	printf("%-1.d.\n",0);
+//	ft_printf("%-d\n",0);
+//	printf("%-d\n",0);
+//	ft_printf("%1.d.\n",0);
+//	printf("%1.d.\n",0);
+//}
