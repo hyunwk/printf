@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 20:03:00 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/15 20:38:32 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,35 +22,7 @@ void	get_flags(char c, t_info *info)
 		info->zero = 1;
 }
 
-void	get_asterisk(t_info *info, va_list *ap)
-{
-	int	num;
-
-	info->asterisk = 1;
-	num = va_arg(*ap, int);
-	if (num < 0)
-	{
-		if (info->dot == -1)
-		{
-			info->width = num * -1;
-			info->left_align = 1;
-		}
-		else
-		{
-			info->asterisk = -1;
-			info->dot = -1;
-		}
-	}
-	else if (!info->width)
-	{
-		if (info->dot == -1)
-			info->width = num;
-		else
-			info->prec = num;
-	}
-}
-//int	get_format_info(const char *line, t_info *info)
-int	get_format_info(const char *line, t_info *info, va_list *ap)
+int	get_format_info(const char *line, t_info *info)
 {
 	int	idx;
 
@@ -63,11 +35,7 @@ int	get_format_info(const char *line, t_info *info, va_list *ap)
 	{
 		if (info->dot == 1 && line[idx] == '0')
 			break ;
-		//get_flags(line[idx++], info);
-		get_flags(line[idx], info);
-
-		if ('*' == line[idx++])
-			get_asterisk(info, ap);
+		get_flags(line[idx++], info);
 	}
 	if ('0' <= line[idx] && line[idx] <= '9' && !info->asterisk)
 		idx += is_num(line + idx, info);
@@ -83,8 +51,7 @@ int	check_format(const char *line, t_info *info, va_list *ap)
 	int	rtn;
 
 	init_info(info);
-	//rtn = get_format_info(line, info);
-	rtn = get_format_info(line, info, ap);
+	rtn = get_format_info(line, info);
 	if (info->type == '%')
 		return (print_char('%', info) + rtn);
 	if (rtn == ERR)
@@ -141,37 +108,3 @@ void	init_info(t_info *info)
 	info->dot = -1;
 	info->prec = 0;
 }
-
-//#include<stdio.h>
-//int main()
-//{
-//	ft_printf("%s%s\n", "abc","def");
-//	printf("%s%s\n", "abc","def");
-//	ft_printf("%5.0i.\n", 0);
-//	printf("%5.0i.\n", 0);
-//	ft_printf("%p\n", NULL);
-//	printf("%p\n", NULL);
-//	ft_printf("%p\n", "Abc");
-//	printf("%p\n", "Abc");
-//	ft_printf("%-1.1d.\n",0);
-//	printf("%-1.1d.\n",0);
-//	ft_printf("%-.d.\n",0);
-//	printf("%-.d.\n",0);
-//	ft_printf("%-.d.\n",0);
-//	printf("%-.d.\n",0);
-//
-//	ft_printf("%-.0d.\n",0);
-//	printf("%-.0d.\n",0);
-//
-//
-//	ft_printf("%-.1d.\n",0);
-//	printf("%-.1d.\n",0);
-//
-//
-//	ft_printf("%-1.d.\n",0);
-//	printf("%-1.d.\n",0);
-//	ft_printf("%-d\n",0);
-//	printf("%-d\n",0);
-//	ft_printf("%1.d.\n",0);
-//	printf("%1.d.\n",0);
-//}

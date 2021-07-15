@@ -6,20 +6,20 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/29 14:00:07 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 20:03:51 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/15 20:39:38 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
-#define FT_PRINTF_H
-#define ERR -1
-#define TYPE "cspdiuxX"
-#define FLAG "-0."
+# define FT_PRINTF_H
+# define ERR -1
+# define TYPE "cspdiuxX"
+# define FLAG "-0."
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "libft/libft.h"
+# include <stdarg.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include "libft/libft.h"
 
 typedef struct s_info
 {
@@ -36,16 +36,15 @@ typedef struct s_info
 // ft_printf.c
 int		ft_printf(const char *line, ...);
 int		check_format(const char *line, t_info *info, va_list *ap);
-//int		get_format_info(const char *line, t_info *info);
-int		get_format_info(const char *line, t_info *info, va_list *ap);
+int		get_format_info(const char *line, t_info *info);
 void	get_flags(char c, t_info *info);
 void	init_info(t_info *info);
 
 // print_str.c 
 int		print_char(char c, t_info *info);
 int		print_str(char *s, t_info *info);
-void    print_str_bigger_len(char *s, t_info *info);
-void    print_str_bigger_width(char *s, t_info *info);
+void	print_str_bigger_len(char *s, t_info *info);
+void	print_str_bigger_width(char *s, t_info *info);
 
 // print_num.c
 int		print_num(long long n, t_info *info);
