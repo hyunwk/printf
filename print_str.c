@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 22:14:00 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 20:17:16 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/15 20:34:58 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	print_str(char *s, t_info *info)
 	return (1);
 }
 
-void print_str_bigger_len(char *s, t_info *info)
+void	print_str_bigger_len(char *s, t_info *info)
 {
 	if (info->dot == 1 && info->width > info->prec && !info->left_align)
 		print_multi_str(info->width - info->prec, info);
@@ -67,7 +67,7 @@ void print_str_bigger_len(char *s, t_info *info)
 		print_multi_str(info->width - info->prec, info);
 }
 
-void print_str_bigger_width(char *s, t_info *info)
+void	print_str_bigger_width(char *s, t_info *info)
 {
 	if (info->prec < (int)ft_strlen(s) && info->dot == 1)
 	{

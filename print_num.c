@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 22:13:01 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 20:23:15 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/15 20:34:41 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	print_num(long long n, t_info *info)
 	return (1);
 }
 
-int print_num_left_bigger_width(long long *n, t_info *info)
+int	print_num_left_bigger_width(long long *n, t_info *info)
 {
 	if (info->width > info->prec && info->prec > get_num_len(*n))
 	{
@@ -62,7 +62,7 @@ int print_num_left_bigger_width(long long *n, t_info *info)
 	return (1);
 }
 
-int print_num_left_else(long long *n, t_info *info)
+int	print_num_left_else(long long *n, t_info *info)
 {
 	if (info->prec >= info->width || info->prec > get_num_len(*n))
 	{
@@ -82,7 +82,7 @@ int print_num_left_else(long long *n, t_info *info)
 	return (1);
 }
 
-int print_num_right_bigger_prec(long long *n, t_info *info)
+int	print_num_right_bigger_prec(long long *n, t_info *info)
 {
 	if (info->prec >= get_num_len(*n))
 	{
@@ -106,7 +106,7 @@ int print_num_right_bigger_prec(long long *n, t_info *info)
 	return (1);
 }
 
-int print_num_right_else(long long *n, t_info *info)
+int	print_num_right_else(long long *n, t_info *info)
 {
 	if (info->width >= get_num_len(*n) && get_num_len(*n) > info->prec)
 	{

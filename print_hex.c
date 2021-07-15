@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 19:57:09 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 20:24:19 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/15 20:33:38 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	print_hex(char *s, t_info *info)
 	return (1);
 }
 
-int print_hex_left_bigger_width(char *s, t_info *info)
+int	print_hex_left_bigger_width(char *s, t_info *info)
 {
 	if (info->width > info->prec && info->prec > (int)ft_strlen(s))
 	{
@@ -61,7 +61,7 @@ int print_hex_left_bigger_width(char *s, t_info *info)
 	return (1);
 }
 
-int print_hex_left_else(char *s, t_info *info)
+int	print_hex_left_else(char *s, t_info *info)
 {
 	if (info->prec >= info->width || info->prec > (int)ft_strlen(s))
 	{
@@ -78,7 +78,7 @@ int print_hex_left_else(char *s, t_info *info)
 	return (0);
 }
 
-int print_hex_right_bigger_prec(char *s, t_info *info)
+int	print_hex_right_bigger_prec(char *s, t_info *info)
 {
 	if (info->prec > (int)ft_strlen(s))
 	{
@@ -97,7 +97,7 @@ int print_hex_right_bigger_prec(char *s, t_info *info)
 	return (1);
 }
 
-int print_hex_right_else(char *s, t_info *info)
+int	print_hex_right_else(char *s, t_info *info)
 {
 	if (info->width > (int)ft_strlen(s) && (int)ft_strlen(s) > info->prec)
 	{

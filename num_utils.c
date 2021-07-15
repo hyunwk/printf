@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 20:02:31 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 20:25:05 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/15 20:32:26 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	get_num_len(long long n)
 {
-	long long i;
+	long long	i;
 
 	i = 0;
 	if (!n)
