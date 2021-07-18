@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 19:57:09 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 20:33:38 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/17 19:58:10 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	print_hex_right_else(char *s, t_info *info)
 {
 	if (info->width > (int)ft_strlen(s) && (int)ft_strlen(s) > info->prec)
 	{
-		if (info->dot == -1 && info->zero)
+		if (info->dot == 0 && info->zero)
 			info->zero = 1;
 		else
 			info->zero = 0;

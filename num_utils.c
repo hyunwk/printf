@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 20:02:31 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 20:32:26 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/17 19:58:23 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int	is_num(const char *s, t_info *info)
 		num = num * 10 + s[idx] - '0';
 		idx++;
 	}
-	if (!info->width && info->dot == -1)
+	if (!info->width && info->dot == 0)
 		info->width = num;
-	else if (info->dot != -1)
+	else if (info->dot != 0)
 		info->prec = num;
 	return (idx);
 }

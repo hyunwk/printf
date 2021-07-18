@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 22:13:01 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/15 20:34:41 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/18 23:08:09 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	print_num(long long n, t_info *info)
 
 int	print_num_left_bigger_width(long long *n, t_info *info)
 {
-	if (info->width > info->prec && info->prec > get_num_len(*n))
+	if (info->width >= info->prec && info->prec >= get_num_len(*n))
 	{
 		if (is_minus(*n))
 		{
@@ -51,7 +51,7 @@ int	print_num_left_bigger_width(long long *n, t_info *info)
 	}
 	else if (info->width >= get_num_len(*n) && get_num_len(*n) > info->prec)
 	{
-		if (*n || info->dot == -1)
+		if (*n || info->dot == 0)
 			ft_putnbr(*n, info);
 		else
 			info->width += 1;
@@ -64,20 +64,20 @@ int	print_num_left_bigger_width(long long *n, t_info *info)
 
 int	print_num_left_else(long long *n, t_info *info)
 {
-	if (info->prec >= info->width || info->prec > get_num_len(*n))
+	if (info->prec >= info->width || info->prec >= get_num_len(*n))
 	{
 		if (is_minus(*n))
 		{
 			ft_putchar('-', info);
 			*n *= -1;
 		}
-		if (get_num_len(*n) > info->width)
+		if (get_num_len(*n) > info->width || info->prec > get_num_len(*n))
 			info->zero = 1;
 		print_multi_str(info->prec - get_num_len(*n), info);
-		if (*n || info->dot != 1 || info->prec != 0)
+		if (*n)
 			ft_putnbr(*n, info);
 	}
-	else if (*n || info->prec > 0 || info->dot != 1)
+	else if (!info->prec || !info->dot)
 		ft_putnbr(*n, info);
 	return (1);
 }
@@ -98,32 +98,29 @@ int	print_num_right_bigger_prec(long long *n, t_info *info)
 		}
 		info->zero = 1;
 		print_multi_str(info->prec - get_num_len(*n), info);
+		return (1);
 	}
-	else if (info->prec >= info->width && info->width > get_num_len(*n))
-		print_multi_str(info->prec - get_num_len(*n), info);
-	else
-		return (0);
-	return (1);
+	return (0);
 }
 
 int	print_num_right_else(long long *n, t_info *info)
 {
 	if (info->width >= get_num_len(*n) && get_num_len(*n) > info->prec)
 	{
-		if (is_minus(*n) && info->zero && info->dot == -1)
+		if (is_minus(*n) && info->zero && info->dot == 0)
 		{
 			ft_putchar('-', info);
 			*n *= -1;
 			info->width -= 1;
 		}
-		if (info->dot == -1 && info->zero)
+		if (info->dot == 0 && info->zero)
 			info->zero = 1;
 		else
 			info->zero = 0;
-		if (!(*n) && info->dot != -1)
-			print_multi_str(info->width - get_num_len(*n) + 1, info);
-		else
+		if (*n || info->dot == 0)
 			print_multi_str(info->width - get_num_len(*n), info);
+		else
+			print_multi_str(info->width - get_num_len(*n) + 1, info);
 	}
 	return (1);
 }
