@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/18 23:08:29 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/19 14:42:18 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,3 @@ void	init_info(t_info *info)
 	info->dot = 0;
 	info->prec = 0;
 }
-//#include<stdio.h>
-//int main()
-//{
-//	ft_printf("%5.0d.\n", 0);
-//	printf("%5.0d.\n", 0);
-//}
