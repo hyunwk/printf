@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 13:53:14 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/19 14:42:18 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/19 17:54:43 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	get_format_info(const char *line, t_info *info)
 		idx += is_num(line + idx, info);
 	if (ft_strchr(TYPE, line[idx]) || line[idx] == '%')
 		info->type = line[idx++];
+	else
+		return (ERR);
 	return (idx + 1);
 }
 
@@ -50,6 +52,8 @@ int	check_format(const char *line, t_info *info, va_list *ap)
 
 	init_info(info);
 	rtn = get_format_info(line, info);
+	if (rtn == ERR)
+		return (1);
 	if (info->type == '%')
 		print_char('%', info);
 	else if (info->type == 'c')
