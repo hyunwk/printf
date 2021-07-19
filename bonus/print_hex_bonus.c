@@ -6,13 +6,13 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 19:57:09 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/19 16:17:30 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/19 16:51:39 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
-int print_hex(char *s, t_info *info)
+int	print_hex(char *s, t_info *info)
 {
 	if (info->left_align)
 	{
@@ -33,7 +33,7 @@ int print_hex(char *s, t_info *info)
 	return (1);
 }
 
-int print_hex_left(char *s, t_info *info)
+int	print_hex_left(char *s, t_info *info)
 {
 	if (info->width >= info->prec && info->prec >= (int)ft_strlen(s))
 	{
@@ -58,7 +58,7 @@ int print_hex_left(char *s, t_info *info)
 	return (1);
 }
 
-void print_hex_left_else(char *s, t_info *info)
+void	print_hex_left_else(char *s, t_info *info)
 {
 	if (info->prec >= info->width)
 	{
@@ -68,7 +68,7 @@ void print_hex_left_else(char *s, t_info *info)
 	ft_putstr(s, (int)ft_strlen(s), info);
 }
 
-void print_hex_right(char *s, t_info *info)
+void	print_hex_right(char *s, t_info *info)
 {
 	if (info->prec > (int)ft_strlen(s))
 	{
