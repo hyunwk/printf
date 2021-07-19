@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/29 14:00:07 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/19 14:49:20 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/19 16:36:26 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define FLAG "-0."
 
 # include <stdarg.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 typedef struct s_info
 {

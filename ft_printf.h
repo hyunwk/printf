@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/29 14:00:07 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/17 16:28:37 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/19 14:49:20 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,9 @@ int		print_num_right_else(long long *n, t_info *info);
 
 // print_hex.c
 int		print_hex(char *s, t_info *info);
-int		print_hex_left_bigger_width(char *s, t_info *info);
-int		print_hex_left_else(char *s, t_info *info);
-int		print_hex_right_bigger_prec(char *s, t_info *info);
-int		print_hex_right_else(char *s, t_info *info);
+int		print_hex_left(char *s, t_info *info);
+void	print_hex_left_else(char *s, t_info *info);
+void	print_hex_right(char *s, t_info *info);
 
 // num_utils.c
 int		get_num_len(long long n);

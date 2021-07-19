@@ -6,13 +6,13 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 13:14:08 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/06/08 14:56:46 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:31:07 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stdlib.h"
 
-int					ft_strncmp(const char *s1, const char *s2, size_t n)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t			cnt;
 	unsigned char	*unsign_s1;

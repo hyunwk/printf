@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 17:32:06 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/05/21 17:44:17 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:30:38 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	*ft_strdup(const char *s1)
 	len = 0;
 	while (s1[len])
 		len++;
-	if (!(ptr = (char *)malloc(sizeof(char) * (len + 1))))
+	ptr = (char *)malloc(sizeof(char) * (len + 1));
+	if (!ptr)
 		return (0);
 	while (*s1)
 		*ptr++ = *s1++;
