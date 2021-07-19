@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/29 14:00:07 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/19 16:36:26 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/19 18:21:12 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,5 @@ void	ft_putchar(char c, t_info *info);
 void	ft_putstr(char *s, int time, t_info *info);
 void	ft_putnbr(long long n, t_info *info);
 void	print_multi_str(int time, t_info *info);
+
 #endif
