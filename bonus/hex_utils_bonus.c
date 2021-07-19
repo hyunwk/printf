@@ -6,7 +6,7 @@
 /*   By: hyunwkim <hyunwkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 20:01:35 by hyunwkim          #+#    #+#             */
-/*   Updated: 2021/07/19 16:17:09 by hyunwkim         ###   ########.fr       */
+/*   Updated: 2021/07/20 02:48:04 by hyunwkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	parse_hex(unsigned long long n, t_info *info)
 			n /= 16;
 		}
 	}
-	else if (info->type != 'p' || n)
+	else
 		hex_arr[0] = '0';
 	print_hex(hex_arr, info);
 	free(hex_arr);
